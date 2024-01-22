@@ -2,91 +2,70 @@ console.log("Executando JS...");
 
 // Main Script>
 
+const inputExp = /^[1-6]+$/;
+
 const measure = collectValue();
-console.log("'"+measure+"'");
 
 const option = optionSelect();
 
-const convertedMeasureMsg = measureConversor(measure, option);
+const resultMsg = measureConversor(measure, option);
 
-alert(convertedMeasureMsg);
+alert(resultMsg);
 
 // Functions >
 
 function collectValue() {
-  let value = prompt("Insira o valor em METROS a ser convertido:");
+  let msg = "Insira o valor em METROS a ser convertido:";
+  let value = prompt(msg);
 
   while (isNaN(value) || value <= 0) {
-    value = prompt(
-      "Insira o valor em METROS a ser convertido:\n(Utilize apenas apenas números e maiores que zero, por favor.):"
-    );
+    value = prompt(msg +"\n(Utilize apenas apenas números e maiores que zero.)");
   }
-  return value.trim();
+  return Number(value.trim());  
 }
 
 function optionSelect(){
-  let opt = prompt("Selecione uma opção de medida para qual o valor deverá ser convertido:"+
+  let msg = "Selecione uma opção de medida para qual o valor deverá ser convertido:"+
     "\n 1 - converter para MILIMETROS. (*1000)"+
     "\n 2 - converter para CENTIMETROS. (*100)"+
     "\n 3 - converter para DECIMETROS. (*10)"+
     "\n 4 - converter para DECAMETROS. (/10)"+
     "\n 5 - converter para HECTOMETROS. (/100)"+
-    "\n 6 - converter para QUILOMETROS. (/1000)"
-  ).trim();
+    "\n 6 - converter para QUILOMETROS. (/1000)";
+  
+    let opt = prompt(msg);
 
-  console.log("Before while - opt value: '"+opt+ "' typeof opt: "+typeof(opt));
-
-  while ((isNaN(opt)) || Number(opt) <= 0 || Number(opt) >= 7 || opt.length === 0) {
-    
-    console.log("Inside while - opt value: '"+opt+ "' typeof opt: "+typeof(opt));
-    
-    selection = prompt("OPÇÃO INSERIDA É INVALIDA."+
-      "\nSelecione uma opção de medida para qual o valor deverá ser convertido:"+
-      "\n 1 - converter para MILIMETROS. (*1000)"+
-      "\n 2 - converter para CENTIMETROS. (*100)"+
-      "\n 3 - converter para DECIMETROS. (*10)"+
-      "\n 4 - converter para DECAMETROS. (/10)"+
-      "\n 5 - converter para HECTOMETROS. (/100)"+
-      "\n 6 - converter para QUILOMETROS. (/1000)"
-    );
+  while (!opt.match(inputExp)) {
+    opt = prompt("OPÇÃO INSERIDA É INVALIDA.\n"+ msg);
   }
 
   return Number(opt);
 }
 
-function measureConversor(value, selection){
-let convertedValueMessage;
+function measureConversor(value, opt){
+let message = value + " metro(s) equivale a ";
 
-  switch (Number(selection)) {
+  switch (opt) {
     case 1:
-      convertedValueMessage = value * 1000 +" milimetros";
-      console.log("MILIMETROS selecionado (* 1000)");
+      message = message + (value * 1000) +" milimetros.";
       break;
     case 2:
-      convertedValueMessage = value * 100 +" centimetros";
-      console.log("CENTIMETROS selecionado (* 100)");
+      message = message + (value * 100) +" centimetros.";
       break;
     case 3:
-      convertedValueMessage = value * 10 +" decimetros";
-      console.log("DECIMETROS selecionado (* 10)");
+      message = message + (value * 10) +" decimetros.";
       break;
     case 4:
-      convertedValueMessage = value / 10 +" decametros";
-      console.log("DECAMETROS selecionado (/ 10)");
+      message = message + (value / 10) +" decametros.";
       break;
     case 5:
-      convertedValueMessage = value / 100 +" hecmetros";
-      console.log("HECTOMETROS selecionado (/ 100)");
+      message = message + (value / 100) +" hecmetros.";
       break;
     case 6:
-      convertedValueMessage = value / 1000 +" quilometros";
-      console.log("QUILOMETROS selecionado (/ 1000)");
+      message = message + (value / 1000) +" quilometros.";
       break;
   }
-
-  console.log("Value :"+ value+". Converted value: "+convertedValueMessage);
-
-  return convertedValueMessage;
+  return message;
 }
 
 console.log("JS carregado com sucesso.");
