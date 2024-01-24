@@ -19,53 +19,56 @@ function collectValue() {
   let value = prompt(msg);
 
   while (isNaN(value) || value <= 0) {
-    value = prompt(msg +"\n(Utilize apenas apenas números e maiores que zero.)");
+    value = prompt(
+      msg + "\n(Utilize apenas apenas números e maiores que zero.)"
+    );
   }
-  return Number(value.trim());  
+  return Number(value.trim());
 }
 
-function optionSelect(){
-  let msg = "Selecione uma opção de medida para qual o valor deverá ser convertido:"+
-    "\n 1 - converter para MILIMETROS. (*1000)"+
-    "\n 2 - converter para CENTIMETROS. (*100)"+
-    "\n 3 - converter para DECIMETROS. (*10)"+
-    "\n 4 - converter para DECAMETROS. (/10)"+
-    "\n 5 - converter para HECTOMETROS. (/100)"+
+function optionSelect() {
+  let msg =
+    "Selecione uma opção de medida para qual o valor deverá ser convertido:" +
+    "\n 1 - converter para MILIMETROS. (*1000)" +
+    "\n 2 - converter para CENTIMETROS. (*100)" +
+    "\n 3 - converter para DECIMETROS. (*10)" +
+    "\n 4 - converter para DECAMETROS. (/10)" +
+    "\n 5 - converter para HECTOMETROS. (/100)" +
     "\n 6 - converter para QUILOMETROS. (/1000)";
-  
-    let opt = prompt(msg);
+
+  let opt = prompt(msg);
 
   while (!opt.match(inputExp)) {
-    opt = prompt("OPÇÃO INSERIDA É INVALIDA.\n"+ msg);
+    opt = prompt("OPÇÃO INSERIDA É INVALIDA.\n" + msg);
   }
 
   return Number(opt);
 }
 
-function measureConversor(value, opt){
-let message = value + " metro(s) equivale a ";
+function measureConversor(value, opt) {
+  let message = value + " metro(s) equivale a ";
 
   switch (opt) {
     case 1:
-      message = message + (value * 1000) +" milimetros.";
+      message = message + value * 1000 + " milimetros.";
       break;
     case 2:
-      message = message + (value * 100) +" centimetros.";
+      message = message + value * 100 + " centimetros.";
       break;
     case 3:
-      message = message + (value * 10) +" decimetros.";
+      message = message + value * 10 + " decimetros.";
       break;
     case 4:
-      message = message + (value / 10) +" decametros.";
+      message = message + value / 10 + " decametros.";
       break;
     case 5:
-      message = message + (value / 100) +" hecmetros.";
+      message = message + value / 100 + " hecmetros.";
       break;
     case 6:
-      message = message + (value / 1000) +" quilometros.";
+      message = message + value / 1000 + " quilometros.";
       break;
   }
   return message;
 }
 
-console.log("JS carregado com sucesso.");
+console.log("JS executado com sucesso.");
