@@ -11,6 +11,10 @@ while (checkIfProceed()) {
   console.log("proceed = true");
   let input = prompt("Qual a palavra/frase bro?");
 
+  if (Object.is(input, null)) {
+    break;
+  }
+
   checkIfPalindrome(input);
 }
 
@@ -29,16 +33,13 @@ function checkIfProceed() {
 function checkIfPalindrome(input) {
   console.log("Original string: " + input + ".");
 
-  let reverseString = input.split("");
-  console.log("reverseString after split(): " + reverseString);
+  let splitedInput = Object.values(input.split(""));
+  let reverseString;
 
-  reverseString.reverse();
-
-  console.log("reverseString after reverse(): " + reverseString);
-
-  reverseString.toString().replace(",", "");
-
-  console.log("reverseString after toString(): " + reverseString);
+  for (let i = 0; i < splitedInput.length; i++) {
+    //TODO:Logica de inverter e recriar string invertida.
+    console.log(splitedInput[i]);
+  }
 }
 
 console.log("JS executado com sucesso.");
