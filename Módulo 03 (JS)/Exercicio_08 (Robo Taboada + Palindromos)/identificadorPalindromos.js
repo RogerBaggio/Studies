@@ -7,39 +7,74 @@ alert(
     "Primeiramente, que é um palíndromo?\nÉ toda palavra ou frase que pode ser lida de trás pra frente e que, independente da direção, mantém o seu sentido."
 );
 
+var input;
+var reverseInput;
+
 while (checkIfProceed()) {
-  console.log("proceed = true");
-  let input = prompt("Qual a palavra/frase bro?");
+  input = prompt("Qual seria a palavra ou frase que deseja conferir se é um palindromo?");
 
   if (Object.is(input, null)) {
     break;
   }
 
-  checkIfPalindrome(input);
+  reverseInput = generateReverseInput(input);
+
+  if (checkIfPalindrome(input)){
+    alert("SIM! É isso ai!\nO texto inserido é um palíndromo! :D\n\nConfira:\n"+
+    "Texto inserido: "+input+"\n"+
+    "Texto invertido: "+reverseInput+"\n"
+    );
+  } else {
+    alert("NÃO. Ah, que pena...\nO texto inserido é não um palíndromo. ;|\n\nConfira:\n"+
+    "Texto inserido: "+input+"\n"+
+    "Texto invertido: "+reverseInput+"\n"
+    );
+  }
 }
 
-console.log("proceed = false'");
-alert("Ok!\n\nAté a próxima!");
+alert("Ok, bye.\n\nAté a próxima!");
 
 // Functions >
 
 function checkIfProceed() {
   let prcd = confirm(
-    "Deseja verificar se uma palavra ou frase é um palíndromo?"
+    "Deseja continuar e verificar se uma palavra ou frase é um palíndromo?"
   );
   return prcd;
 }
 
-function checkIfPalindrome(input) {
-  console.log("Original string: " + input + ".");
-
+function generateReverseInput(input) {
   let splitedInput = Object.values(input.split(""));
-  let reverseString;
+  splitedInput.reverse();
+
+  let reverseInput = "";
 
   for (let i = 0; i < splitedInput.length; i++) {
-    //TODO:Logica de inverter e recriar string invertida.
-    console.log(splitedInput[i]);
+    reverseInput += splitedInput[i];
   }
+  return reverseInput;
 }
 
-console.log("JS executado com sucesso.");
+function checkIfPalindrome(input){
+  let result = false;
+  
+  let cleanInput = generateCleanInput(input);
+  let reverseCleanInput = generateReverseInput(cleanInput);
+
+  if(cleanInput == reverseCleanInput){
+    result = true;
+  }
+  return result;
+}
+
+function generateCleanInput(text){
+  let clnInpt = text.toLowerCase();
+  
+  clnInpt = clnInpt.replace(/[\s.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+  clnInpt = clnInpt.normalize("NFD");
+  clnInpt = clnInpt.replace(/\p{Diacritic}/gu, "");
+
+  return clnInpt;
+}
+
+console.log("JS executado com sucesso."); 
