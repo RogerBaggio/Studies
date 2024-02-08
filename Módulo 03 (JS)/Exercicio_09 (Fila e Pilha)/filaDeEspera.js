@@ -47,6 +47,9 @@ function principalMenu() {
   let opt = prompt(msg);
 
   while (Object.is(opt, null) || !opt.match(inputExp)) {
+    if (Object.is(opt, null)) {
+      return;
+    }
     opt = prompt("OPÇÃO INSERIDA É INVÁLIDA.\n" + msg);
   }
   return opt;
@@ -58,17 +61,21 @@ function checkifproceed() {
 }
 
 function addPatient() {
-  let ptnt = prompt("Qual o nome do paciente?");
-  console.log("prompt: '" + ptnt + "'");
-  console.log("!Object.is(ptnt, null): " + !Object.is(ptnt, null));
-  console.log("!ptnt.length === 0: " + (ptnt.length === 0) ? true : false);
-  console.log("!ptnt.trim(): " + !!ptnt.trim());
+  let msg = "Qual o nome do paciente a ser registrado na fila?";
+  let name = prompt(msg);
 
-  //TODO: Filtrar nomes vazios e pular opeção qndo nulo (clique em cancel).
-  if (!Object.is(ptnt, null) || !ptnt.length === 0 || !ptnt.trim()) {
-    //TODO: 1 Adicionar paciente - checar se prompt vazio. Cancel volta para menu. (.push)
-    alert("Nome é válido!");
+  if (Object.is(name, null)) {
+    return;
   }
+
+  while (name.length === 0 || !name.trim()) {
+    name = prompt("POR FAVOR, INSIRA UM NOME VÁLIDO.\n" + msg);
+    if (Object.is(name, null)) {
+      return;
+    }
+  }
+  alert("Nome é val ido, vlw!");
+  //TODO: Limpar espaços do começo e do final, capitalizar nome.
   return;
 }
 
