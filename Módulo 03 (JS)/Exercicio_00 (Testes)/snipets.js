@@ -23,9 +23,9 @@ console.log("Executando JS Snipets...");
   str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   str.replace(/[\s.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");*/
 
-  //---Snipet de testes para identificador de palindromos--->
+//---Snipet de testes para identificador de palindromos--->
 
-  /*let clnInpt = "Ótimo, só eu, que os omito.";
+/*let clnInpt = "Ótimo, só eu, que os omito.";
     console.log(clnInpt);
     clnInpt = clnInpt.toLowerCase();
     console.log(clnInpt);
@@ -35,5 +35,25 @@ console.log("Executando JS Snipets...");
     console.log(clnInpt);
     clnInpt = clnInpt.replace(/\p{Diacritic}/gu, "");
     console.log(clnInpt);*/
+
+//---Para remover multiplos espaços brancos e normalizar e capitalizar primeira letra de cada palavra da string--->
+
+/*let nameString = "  5 &*roger-  ,   b'aggio.   j s  dEVELOPER";
+  console.log("Original string: '" + nameString + "'");
+  nameString = nameString.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+  console.log("Non-alphanumeric removed: '" + nameString + "'");
+  nameString = nameString.replace(/\s+/g, " ");
+  console.log("Duplicated spaces removed: '" + nameString + "'");
+  nameString = nameString.trimStart();
+  console.log("Leading spaces removed: '" + nameString + "'");
+  nameString = nameString.trimEnd();
+  console.log("Trailing spaces removed: '" + nameString + "'");
+  nameString = nameString.toLowerCase();
+  console.log("All string to lower case: '" + nameString + "'");
+  nameString = nameString
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
+    .join(" ");
+  console.log("Capitalized first letters: '" + nameString + "'");*/
 
 console.log("JS Snipets executado com sucesso.");

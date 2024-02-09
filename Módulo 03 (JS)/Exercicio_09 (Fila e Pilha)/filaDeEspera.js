@@ -16,33 +16,39 @@ do {
   option = principalMenu();
 
   if (option == "1") {
-    alert("Opção escolhida é 1");
+    alert(
+      "Opção escolhida foi:\n\n1 - Adicionar paciente à fila de atendimento."
+    );
     addPatient();
-    //TODO: 1 Adicionar paciente - checar se prompt vazio. Cancel volta para menu. (.push)
   } else if (option == "2") {
-    alert("Opção escolhida é 2");
-    //TODO: 2 Atender paciente - exibir mensagem e nome. Se lista vazia, voltar para menu. (.pop)
+    alert(
+      "Opção escolhida foi:\n\n2 - Atender próximo paciente da fila de atendimento."
+    );
+    assistPatient();
   } else if (option == "3") {
-    alert("Opção escolhida é 3");
-    //TODO: 3 Exibir fila - Listar nomes da lista (1° - Nome, 2°...). Se fila vazia, voltar para menu.
+    alert(
+      "Opção escolhida foi:\n\n3 - Exibir lista de nomes na fila de atendimento."
+    );
+    showNameList();
   } else if (option == "4") {
-    alert("Opção escolhida é 4");
-    //TODO: 4 Sair - Mensagem de despedida. Fim de ciclo.
+    alert(
+      "Opção escolhida foi:\n\n4 - Sair do sistema de fila de atendimentos."
+    );
     break;
   }
 } while (checkifproceed());
 
-alert("Ok, bye.\n\nAté a próxima!");
+alert("Ok, bye.\n\nObrigado e até a próxima!");
 
 // Functions >
 
 function principalMenu() {
   let msg =
     "Insira o valor da opção que deseja:\n" +
-    "\n 1 - Adicionar paciente na fila de atendimento." +
-    "\n 2 - Atender próximo paciente da fila." +
-    "\n 3 - Exibir lista de nomes na fila." +
-    "\n 4 - Sair.";
+    "\n 1 - Adicionar paciente à fila de atendimento." +
+    "\n 2 - Atender próximo paciente da fila de atendimento." +
+    "\n 3 - Exibir lista de nomes na fila de atendimento." +
+    "\n 4 - Sair do sistema de fila de atendimentos.";
 
   let opt = prompt(msg);
 
@@ -74,9 +80,66 @@ function addPatient() {
       return;
     }
   }
-  alert("Nome é val ido, vlw!");
-  //TODO: Limpar espaços do começo e do final, capitalizar nome.
+
+  name = normalizeNameEntry(name);
+  patientList.push(name);
+
   return;
 }
 
+function normalizeNameEntry(name) {
+  let normalizedName = name;
+  normalizedName = normalizedName.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+  normalizedName = normalizedName.replace(/\s+/g, " ");
+  normalizedName = normalizedName.trimStart();
+  normalizedName = normalizedName.trimEnd();
+  normalizedName = normalizedName.toLowerCase();
+
+  normalizedName = normalizedName
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
+    .join(" ");
+
+  return normalizedName;
+}
+
+function assistPatient() {
+  let patient = patientList.shift();
+
+  if (checkEmptyList()) {
+    return;
+  }
+
+  confirm(
+    patient +
+      " será chamado para atendimento agora.\n" +
+      "Portanto este paciente será removido da fila de atendimentos.\n\n" +
+      "Obrigado."
+  );
+  return;
+}
+
+function checkEmptyList() {
+  let isEmpty = false;
+  if (patientList.length === 0) {
+    alert("No momento, não há pacientes na fila de atendimento.");
+    isEmpty = true;
+  }
+  return isEmpty;
+}
+
+function showNameList() {
+  if (checkEmptyList()) {
+    return;
+  }
+
+  let msg = "Lista de pacientes por ondem de chegada:\n\n";
+
+  for (let i = 0; i < patientList.length; i++) {
+    msg += i + 1 + "° paciente: " + patientList[i] + ".\n";
+  }
+
+  alert(msg);
+  return;
+}
 console.log("JS executado com sucesso.");

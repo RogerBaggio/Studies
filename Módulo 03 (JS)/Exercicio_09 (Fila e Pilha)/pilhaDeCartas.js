@@ -5,4 +5,4 @@ console.log("Pilha de Cartas.");
 
 // Functions >
 
-console.log("JS executado com sucesso."); 
+console.log("JS executado com sucesso.");
