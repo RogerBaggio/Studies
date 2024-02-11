@@ -13,7 +13,7 @@ var patientList = [];
 var option;
 
 do {
-  option = principalMenu();
+  option = mainMenu();
 
   if (option == "1") {
     alert(
@@ -42,7 +42,7 @@ alert("Ok, bye.\n\nObrigado e até a próxima!");
 
 // Functions >
 
-function principalMenu() {
+function mainMenu() {
   let msg =
     "Insira o valor da opção que deseja:\n" +
     "\n 1 - Adicionar paciente à fila de atendimento." +

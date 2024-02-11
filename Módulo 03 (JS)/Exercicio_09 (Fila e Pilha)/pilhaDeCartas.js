@@ -64,26 +64,68 @@ alert(
     "Confira as operações possíveis no menu seguinte."
 );
 
-/*TODO: Menu inicial mostrando qtd cartas no baralho, qtd cartas sacadas e menu com opções:
- 1 listar cartas do baralho
- 2 listar cartas sacadas
- 3 puxar carta aleatoria do baralho
- 4 devolver carta selecionada ao baralho
- 5 sair do sistema.
-*/
+const inputExp = /^[1-5]+$/;
+var deckCards = cardList;
+var drawnCards = [];
+var option;
 
-//TODO: opção 1 - Exibir lista de cartas no baralho.
+do {
+  option = mainMenu();
 
-//TODO: opção 2 - Exibir lista de cartas na sacadas.
-
-//TODO: opção 3 - Sacar carta aleatoria do baralho.
-
-//TODO: opção 4 - Devolver carta selecionada ao baralho.
-
-//TODO: opção 5 - Sair.
+  if (option == "1") {
+    alert("Opção escolhida foi:\n\n1 - Exibir lista de cartas no baralho.");
+    //TODO: opção 1 - Exibir lista de cartas no baralho.
+    //showDeckCardList();
+  } else if (option == "2") {
+    alert("Opção escolhida foi:\n\n2 - Exibir lista de cartas na sacadas.");
+    //TODO: opção 2 - Exibir lista de cartas na sacadas.
+    //showDrawnCardList();
+  } else if (option == "3") {
+    alert("Opção escolhida foi:\n\n3 - Sacar carta aleatoria do baralho.");
+    //TODO: opção 3 - Sacar carta aleatoria do baralho.
+    //drawnCardFromDeck();
+  } else if (option == "4") {
+    alert("Opção escolhida foi:\n\n4 - Devolver carta selecionada ao baralho.");
+    //TODO: opção 4 - Devolver carta selecionada ao baralho.
+    //returnCardToDeck();
+  } else if (option == "5") {
+    alert("Opção escolhida foi:\n\n5 - Sair do sistema de pilha de cartas.");
+    //TODO: opção 5 - Sair.
+    break;
+  }
+} while (checkifproceed());
 
 alert("Ok, bye.\n\nObrigado e até a próxima!");
 
 // Functions >
+
+function mainMenu() {
+  let msg =
+    "Insira o valor da opção que deseja:\n" +
+    "\n 1 - Exibir lista de cartas no baralho." +
+    "\n 2 - Exibir lista de cartas na sacadas." +
+    "\n 3 - Sacar carta aleatoria do baralho." +
+    "\n 4 - Devolver carta selecionada ao baralho." +
+    "\n 5 - Sair do sistema de pilha de cartas." +
+    "\n\n Cartas no baralho: " +
+    deckCards.length +
+    " // Cartas sacadas: " +
+    drawnCards.length;
+
+  let opt = prompt(msg);
+
+  while (Object.is(opt, null) || !opt.match(inputExp)) {
+    if (Object.is(opt, null)) {
+      return;
+    }
+    opt = prompt("OPÇÃO INSERIDA É INVÁLIDA.\n" + msg);
+  }
+  return opt;
+}
+
+function checkifproceed() {
+  let proceed = confirm("Deseja continuar utilizando o sistema?");
+  return proceed;
+}
 
 console.log("JS executado com sucesso.");
