@@ -1,4 +1,7 @@
-console.log("Carregando JS...");
+console.log("Executando JS...");
+console.log("Teste de velocidades.");
+
+// Main Script >
 
 const nomeVeiculo1 = prompt("Qual o nome do primeiro veículo?");
 const velocidadeVeiculo1 = coletarVelocidade();
@@ -18,6 +21,8 @@ function coletarVelocidade() {
   }
   return velocidade;
 }
+
+// Functions >
 
 function compararVelocidades() {
   let texto =
@@ -40,4 +45,4 @@ function compararVelocidades() {
   }
 }
 
-console.log("JS carregado com sucesso.");
+console.log("JS executado com sucesso.");

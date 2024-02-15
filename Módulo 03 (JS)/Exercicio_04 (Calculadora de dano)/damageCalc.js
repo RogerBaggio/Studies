@@ -1,4 +1,5 @@
 console.log("Executando JS...");
+console.log("Calculadora de dano.");
 
 // Main script >
 
@@ -90,7 +91,7 @@ function battleResult(char1, char2) {
   let hp;
   let result;
   let damage;
-  
+
   if (Number(char1.atk) > Number(char2.def) && !Boolean(char2.shld)) {
     damage = char1.atk - char2.def;
   } else if (Number(char1.atk) > Number(char2.def) && Boolean(char2.shld)) {

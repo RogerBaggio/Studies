@@ -1,8 +1,10 @@
 console.log("Carregando JS...");
+console.log("Calculadora de dano +.");
 
+//TODO:Rework da calculadora de dano, mais aperfeiçoada e com mais tipos de dano!
 // Main script -------------------------------------------------->
 
-var player1 = { nm: "", pwr: "", def: "", hp: "", crit: "", shld: "" };
+/*var player1 = { nm: "", pwr: "", def: "", hp: "", crit: "", shld: "" };
 var player2 = player1;
 
 player1.nm = coletarNome("primeiro");
@@ -142,7 +144,6 @@ function criticalHit(critRate) {
   }
 }
 
-/*
 começar luta{
   calcular ataque
   checar sobrevivencia

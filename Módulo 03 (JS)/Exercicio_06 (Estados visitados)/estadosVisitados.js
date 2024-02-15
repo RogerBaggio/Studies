@@ -1,4 +1,5 @@
 console.log("Executando JS...");
+console.log("Estados visitados.");
 
 // Main Script>
 

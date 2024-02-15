@@ -1,4 +1,5 @@
 console.log("Executando JS...");
+console.log("Controle financeiro.");
 
 // Main Script>
 
@@ -15,7 +16,7 @@ alert(
 balance = retrieveValue("start");
 
 if (!Object.is(balance, null)) {
-  //TODO:Exercicio com uso de DO WHILE.
+  //Exercicio com uso de DO WHILE.
   do {
     operation = selectOperation(balance);
 
@@ -100,7 +101,7 @@ function isOperation(oprt) {
 }
 
 function executeOperation(blnc, oprt, oprtVal) {
-  //TODO:Exercicio com uso de SWITCH CASE.
+  //Exercicio com uso de SWITCH CASE.
   let newBlnc;
 
   switch (oprt) {

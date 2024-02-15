@@ -1,4 +1,7 @@
-console.log("Carregando JS...");
+console.log("Executando JS...");
+console.log("Caculadora Básica.");
+
+// Main Script >
 
 const firstValue = prompt("Qual é o primeiro número?");
 const secondValue = prompt("Qual é o segundo número?");
@@ -32,4 +35,4 @@ alert(
     "."
 );
 
-console.log("JS carregado com sucesso!");
+console.log("JS executado com sucesso.");

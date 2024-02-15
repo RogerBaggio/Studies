@@ -2,12 +2,22 @@ console.log("Executando JS Snipets...");
 
 //-------------JS Snipets------------->
 
+//---para calcular idades--->
+
+/*function age(birthdate) {
+  const today = new Date();
+  const age = today.getFullYear() - birthdate.getFullYear() - 
+             (today.getMonth() < birthdate.getMonth() || 
+             (today.getMonth() === birthdate.getMonth() && today.getDate() < birthdate.getDate()));
+  return age;
+}
+
 //---Inversor de strings--->
 
 //O codigo a seguir inverte os valores de uma palava em uma string.
 //Bugproof a não ser que a string contenha uma virgula, que será removida da string invertida...
 
-/*let string = "text";
+let string = "text";
 console.log("string: " + string);
 let splitedString = string.split(""); // resulta em um objeto key value com as letras da string.
 
