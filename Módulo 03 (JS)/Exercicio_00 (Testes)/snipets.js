@@ -56,4 +56,43 @@ console.log("Executando JS Snipets...");
     .join(" ");
   console.log("Capitalized first letters: '" + nameString + "'");*/
 
+//---Para embaralhar aleatoriamente itens de um array de strings--->
+
+/*var cardList = [
+  "A ♦",
+  "A ♠",
+  "A ♥",
+  "A ♣",
+  "2 ♦",
+  "2 ♠",
+  "2 ♥",
+  "2 ♣",
+  "3 ♦",
+  "3 ♠",
+  "3 ♥",
+  "3 ♣",
+  "4 ♦",
+  "4 ♠",
+  "4 ♥",
+  "4 ♣",
+];
+arrayShuffle(cardList);
+console.log(cardList);
+
+function arrayShuffle(array) {
+  let currentIndex = array.length, randomIndex;
+
+  //enquanto houver itens para embaralhar.
+  while (currentIndex > 0) {
+    //seleciona um elemento ainda restante.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // e troca de lugar com o elemento atual.
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex],];
+  }
+
+  return array;
+}*/
+
 console.log("JS Snipets executado com sucesso.");
