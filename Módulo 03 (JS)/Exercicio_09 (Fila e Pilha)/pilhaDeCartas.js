@@ -87,7 +87,7 @@ do {
   } else if (option == undefined) {
     checkifproceed() ? option : (option = "5");
   }
-} while (option != "5");
+} while (option !== "5");
 
 alert("Opção escolhida foi:\n\n5 - Sair do sistema de pilha de cartas.");
 

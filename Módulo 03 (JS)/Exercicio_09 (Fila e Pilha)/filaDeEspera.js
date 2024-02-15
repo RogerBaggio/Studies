@@ -16,24 +16,13 @@ do {
   option = mainMenu();
 
   if (option == "1") {
-    alert(
-      "Opção escolhida foi:\n\n1 - Adicionar paciente à fila de atendimento."
-    );
     addPatient();
   } else if (option == "2") {
-    alert(
-      "Opção escolhida foi:\n\n2 - Atender próximo paciente da fila de atendimento."
-    );
     assistPatient();
   } else if (option == "3") {
-    alert(
-      "Opção escolhida foi:\n\n3 - Exibir lista de nomes na fila de atendimento."
-    );
     showNameList();
   } else if (option == "4") {
-    alert(
-      "Opção escolhida foi:\n\n4 - Sair do sistema de fila de atendimentos."
-    );
+    alert("Opção: 4 - Sair do sistema de fila de atendimentos.");
     break;
   }
 } while (checkifproceed());
@@ -67,7 +56,8 @@ function checkifproceed() {
 }
 
 function addPatient() {
-  let msg = "Qual o nome do paciente a ser registrado na fila?";
+  let msg =
+    "Opção: 1 - Adicionar paciente à fila de atendimento.\n\nQual o nome do paciente a ser registrado na fila?";
   let name = prompt(msg);
 
   if (Object.is(name, null)) {
@@ -104,17 +94,19 @@ function normalizeNameEntry(name) {
 }
 
 function assistPatient() {
-  let patient = patientList.shift();
+  let patient;
 
   if (checkEmptyList()) {
     return;
   }
 
+  patient = patientList.shift();
+
   confirm(
-    patient +
-      " será chamado para atendimento agora.\n" +
-      "Portanto este paciente será removido da fila de atendimentos.\n\n" +
-      "Obrigado."
+    'Opção: 2 - Atender próximo paciente da fila de atendimento.\n\n"' +
+      patient +
+      '" será chamado para atendimento agora.\n' +
+      "Este paciente será removido da fila de atendimentos."
   );
   return;
 }
@@ -133,7 +125,8 @@ function showNameList() {
     return;
   }
 
-  let msg = "Lista de pacientes por ondem de chegada:\n\n";
+  let msg =
+    "Opção: 3 - Exibir lista de nomes na fila de atendimento.\n\nLista de pacientes por ondem de chegada:\n";
 
   for (let i = 0; i < patientList.length; i++) {
     msg += i + 1 + "° paciente: " + patientList[i] + ".\n";
