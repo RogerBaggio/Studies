@@ -39,10 +39,9 @@ function optionSelect() {
 
   let opt = prompt(msg);
 
-  while (!opt.match(inputExp)) {
+  while (isNaN(opt) || opt <= 0 || opt >= 7) {
     opt = prompt("OPÇÃO INSERIDA É INVALIDA.\n" + msg);
   }
-
   return Number(opt);
 }
 

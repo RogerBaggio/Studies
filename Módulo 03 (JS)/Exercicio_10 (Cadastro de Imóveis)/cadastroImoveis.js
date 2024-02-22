@@ -20,7 +20,7 @@ class ImmobileProperty {
 //TODO: REMOVER MOCK -->
 immobilePropertiesList.push(
   new ImmobileProperty(
-    "Patamento Obuts",
+    "Apartamento Butantã",
     "Roger",
     "Rua Prof. Giconda Mussolini 291",
     2,
@@ -31,7 +31,7 @@ immobilePropertiesList.push(
 );
 
 var immobileProperty = {
-  name: "Casinha Pílito",
+  name: "Casa ES",
   owner: "Carol",
   address: "Av. Geronimo Monteiro 1824",
   bedrooms: 2,
@@ -94,13 +94,25 @@ function mainMenu() {
 
   let opt = prompt(msg);
 
-  while (Object.is(opt, null) || !opt.match(inputExp)) {
+  while (checkMatchingMenuOption(opt)) {
     if (Object.is(opt, null)) {
       return;
     }
     opt = prompt("OPÇÃO INSERIDA É INVÁLIDA.\n" + msg);
   }
   return opt;
+}
+
+function checkMatchingMenuOption(opt) {
+  let unmatch;
+  if (isNaN(opt) || opt <= 0 || opt >= 6) {
+    console.log("opt: " + opt + " //unmatch = true (inside)");
+    unmatch = true;
+  } else {
+    console.log("opt: " + opt + " //unmatch = false (inside)");
+    unmatch = false;
+  }
+  return unmatch;
 }
 
 function checkifproceed() {
