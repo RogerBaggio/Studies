@@ -59,27 +59,29 @@ function addPatient() {
   let msg =
     "Opção: 1 - Adicionar paciente à fila de atendimento.\n\nQual o nome do paciente a ser registrado na fila?";
   let name = prompt(msg);
-
   if (Object.is(name, null)) {
     return;
   }
+  name = normalizeNameEntry(name);
 
   while (name.length === 0 || !name.trim()) {
     name = prompt("POR FAVOR, INSIRA UM NOME VÁLIDO.\n" + msg);
     if (Object.is(name, null)) {
       return;
     }
+    name = normalizeNameEntry(name);
   }
 
-  name = normalizeNameEntry(name);
   patientList.push(name);
-
   return;
 }
 
 function normalizeNameEntry(name) {
   let normalizedName = name;
-  normalizedName = normalizedName.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+  normalizedName = normalizedName.replace(
+    /[.,\/#!?[$%\^&\*;:{}=\-_`~()|/+@º°§\]]/g,
+    ""
+  );
   normalizedName = normalizedName.replace(/\s+/g, " ");
   normalizedName = normalizedName.trimStart();
   normalizedName = normalizedName.trimEnd();

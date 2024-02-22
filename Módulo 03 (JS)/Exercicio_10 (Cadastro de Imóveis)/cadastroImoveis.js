@@ -3,7 +3,6 @@ console.log("Cadastro de Imóveis.");
 
 // Main Script >
 
-const inputExp = /^[1-5]+$/;
 const immobilePropertiesList = [];
 
 class ImmobileProperty {
@@ -17,41 +16,6 @@ class ImmobileProperty {
     this.hasBackyard = backyard;
   }
 }
-//TODO: REMOVER MOCK -->
-immobilePropertiesList.push(
-  new ImmobileProperty(
-    "Apartamento Butantã",
-    "Roger",
-    "Rua Prof. Giconda Mussolini 291",
-    2,
-    2,
-    true,
-    false
-  )
-);
-
-var immobileProperty = {
-  name: "Casa ES",
-  owner: "Carol",
-  address: "Av. Geronimo Monteiro 1824",
-  bedrooms: 2,
-  bathrooms: 1,
-  garage: false,
-  backyard: true,
-};
-
-immobilePropertiesList.push(
-  new ImmobileProperty(
-    immobileProperty.name,
-    immobileProperty.owner,
-    immobileProperty.address,
-    immobileProperty.bedrooms,
-    immobileProperty.bathrooms,
-    immobileProperty.garage,
-    immobileProperty.backyard
-  )
-);
-//TODO: REMOVER MOCK <--
 
 alert(
   "Bem vindo ao Exerício 10 - Cadastro de Imóveis.\n\n" +
@@ -106,10 +70,8 @@ function mainMenu() {
 function checkMatchingMenuOption(opt) {
   let unmatch;
   if (isNaN(opt) || opt <= 0 || opt >= 6) {
-    console.log("opt: " + opt + " //unmatch = true (inside)");
     unmatch = true;
   } else {
-    console.log("opt: " + opt + " //unmatch = false (inside)");
     unmatch = false;
   }
   return unmatch;
@@ -214,7 +176,7 @@ function returnImmobilePropertyRegistry(input) {
 
 function registerProperty() {
   let msg = "Opção 2 - Cadastrar novo imóvel.";
-  let prop = new ImmobileProperty(); //immobilePropertiesList[1];
+  let prop = new ImmobileProperty();
 
   for (let value in prop) {
     let input = null;
@@ -222,121 +184,54 @@ function registerProperty() {
     switch (value) {
       case "propertyName":
         msg += "\nQual o título deste novo registro de imóvel?";
-        input = prompt(msg);
-
-        if (Object.is(input, null)) {
+        input = registryStringInfoValidate(msg, "TÍTULO");
+        if (input == undefined) {
           return;
         }
-
-        while (input.length === 0 || !input.trim()) {
-          input = prompt("POR FAVOR, INSIRA TÍTULO VÁLIDO.\n" + msg);
-          if (Object.is(input, null)) {
-            return;
-          }
-        }
-
-        prop[value] = normalizeInputEntry(input);
+        prop[value] = input;
         break;
 
       case "ownerName":
         msg = "Qual o nome do proprietário deste imóvel?";
-        input = prompt(msg);
-        if (Object.is(input, null)) {
+        input = registryStringInfoValidate(msg, "NOME");
+        if (input == undefined) {
           return;
         }
-
-        while (input.length === 0 || !input.trim()) {
-          input = prompt("POR FAVOR, INSIRA UM NOME VÁLIDO.\n" + msg);
-          if (Object.is(input, null)) {
-            return;
-          }
-        }
-
-        prop[value] = normalizeInputEntry(input);
+        prop[value] = input;
         break;
 
       case "propertyAddress":
         msg = "Qual o endereço deste imóvel?";
-        input = prompt(msg);
-        if (Object.is(input, null)) {
+        input = registryStringInfoValidate(msg, "ENDEREÇO");
+        if (input == undefined) {
           return;
         }
-
-        while (input.length === 0 || !input.trim()) {
-          input = prompt("POR FAVOR, INSIRA UM ENDEREÇO VÁLIDO.\n" + msg);
-          if (Object.is(input, null)) {
-            return;
-          }
-        }
-
-        prop[value] = normalizeInputEntry(input);
+        prop[value] = input;
         break;
 
       case "bedroomsQuantity":
         msg = "Quantos quartos possui este imóvel?";
-        input = prompt(msg);
-        if (Object.is(input, null)) {
-          return;
-        }
-
-        while (isNaN(input) || input.length === 0 || !input.trim()) {
-          input = prompt("POR FAVOR, INSIRA APENAS NÚMEROS.\n" + msg);
-          if (Object.is(input, null)) {
-            return;
-          }
-        }
-
+        input = registryNumberInfoValidate(msg);
         prop[value] = input;
         break;
 
       case "bathroomsQuantity":
         msg = "Quantos banheiros possui este imóvel?";
-        input = prompt(msg);
-        if (Object.is(input, null)) {
-          return;
-        }
-
-        while (isNaN(input) || input.length === 0 || !input.trim()) {
-          input = prompt("POR FAVOR, INSIRA APENAS NÚMEROS.\n" + msg);
-          if (Object.is(input, null)) {
-            return;
-          }
-        }
-
+        input = registryNumberInfoValidate(msg);
         prop[value] = input;
         break;
 
       case "hasGarage":
-        msg =
-          'Este imóvel possui garagem?\nClique em OK para "SIM" ou Cancelar para "NÃO"';
-        input = confirm(msg);
-
-        prop[value] = input;
+        prop[value] = confirm(
+          'Este imóvel possui garagem?\nClique em OK para "SIM" ou Cancelar para "NÃO"'
+        );
         break;
 
       case "hasBackyard":
-        msg =
-          'Este imóvel possui Quintal?\nClique em OK para "SIM" ou Cancelar para "NÃO"';
-        input = confirm(msg);
-
-        prop[value] = input;
+        prop[value] = confirm(
+          'Este imóvel possui Quintal?\nClique em OK para "SIM" ou Cancelar para "NÃO"'
+        );
         break;
-      default:
-        msg = "Qual o " + value + " deste imóvel?";
-        input = prompt(msg);
-
-        if (Object.is(input, null)) {
-          return;
-        }
-
-        while (input.length === 0 || !input.trim()) {
-          input = prompt("POR FAVOR, INSIRA UM " + value + " VÁLIDO.\n" + msg);
-          if (Object.is(input, null)) {
-            return;
-          }
-        }
-
-        prop[value] = normalizeInputEntry(input);
     }
   }
 
@@ -344,9 +239,44 @@ function registerProperty() {
   return;
 }
 
+function registryStringInfoValidate(msg, infoField) {
+  let input = prompt(msg);
+  if (Object.is(input, null)) {
+    return;
+  }
+  input = normalizeInputEntry(input);
+
+  while (input.length === 0 || !input.trim()) {
+    input = prompt("POR FAVOR, INSIRA UM " + infoField + " VÁLIDO.\n" + msg);
+    if (Object.is(input, null)) {
+      return;
+    }
+    input = normalizeInputEntry(input);
+  }
+  return input;
+}
+
+function registryNumberInfoValidate(msg) {
+  let input = prompt(msg);
+  if (Object.is(input, null)) {
+    return;
+  }
+
+  while (isNaN(input) || input.length === 0 || !input.trim()) {
+    input = prompt("POR FAVOR, INSIRA APENAS NÚMEROS.\n" + msg);
+    if (Object.is(input, null)) {
+      return;
+    }
+  }
+  return Number(input);
+}
+
 function normalizeInputEntry(input) {
   let normalizedInput = input;
-  normalizedInput = normalizedInput.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+  normalizedInput = normalizedInput.replace(
+    /[.,\/#!?[$%\^&\*;:{}=\-_`~()|/+@º°§\]]/g,
+    ""
+  );
   normalizedInput = normalizedInput.replace(/\s+/g, " ");
   normalizedInput = normalizedInput.trimStart();
   normalizedInput = normalizedInput.trimEnd();
@@ -427,117 +357,68 @@ function changeInfoField(selectedRegistry, infoPosition) {
     "Qual o novo valor deste campo para este registro?\n\nInformação atual do registro de número " +
     selectedRegistry +
     ":";
+
   if (Number(infoPosition) == 1) {
     msg +=
       "\n1 - Título: " +
       immobilePropertiesList[selectedRegistry - 1].propertyName;
-    newInfoValue = prompt(msg);
 
-    if (Object.is(newInfoValue, null)) {
+    newInfoValue = registryStringInfoValidate(msg, "TÍTULO");
+    if (newInfoValue == undefined) {
       return;
     }
-
-    while (newInfoValue.length === 0 || !newInfoValue.trim()) {
-      newInfoValue = prompt("POR FAVOR, INSIRA UM TÍTULO VÁLIDO.\n" + msg);
-      if (Object.is(newInfoValue, null)) {
-        return;
-      }
-    }
-    newInfoValue = normalizeInputEntry(newInfoValue);
     immobilePropertiesList[selectedRegistry - 1].propertyName = newInfoValue;
   }
+
   if (Number(infoPosition) == 2) {
     msg +=
       "\n2 - Nome do proprietário: " +
       immobilePropertiesList[selectedRegistry - 1].ownerName;
-    newInfoValue = prompt(msg);
-
-    if (Object.is(newInfoValue, null)) {
+    newInfoValue = registryStringInfoValidate(msg, "NOME");
+    if (newInfoValue == undefined) {
       return;
     }
-
-    while (newInfoValue.length === 0 || !newInfoValue.trim()) {
-      newInfoValue = prompt("POR FAVOR, INSIRA UM NOME VÁLIDO.\n" + msg);
-      if (Object.is(newInfoValue, null)) {
-        return;
-      }
-    }
-    newInfoValue = normalizeInputEntry(newInfoValue);
     immobilePropertiesList[selectedRegistry - 1].ownerName = newInfoValue;
   }
+
   if (Number(infoPosition) == 3) {
     msg +=
       "\n3 - Endereço: " +
       immobilePropertiesList[selectedRegistry - 1].propertyAddress;
-    newInfoValue = prompt(msg);
-
-    if (Object.is(newInfoValue, null)) {
+    newInfoValue = registryStringInfoValidate(msg, "ENDEREÇO");
+    if (newInfoValue == undefined) {
       return;
     }
-
-    while (newInfoValue.length === 0 || !newInfoValue.trim()) {
-      newInfoValue = prompt("POR FAVOR, INSIRA UM ENDEREÇO VÁLIDO.\n" + msg);
-      if (Object.is(newInfoValue, null)) {
-        return;
-      }
-    }
-    newInfoValue = normalizeInputEntry(newInfoValue);
     immobilePropertiesList[selectedRegistry - 1].propertyAddress = newInfoValue;
   }
+
   if (Number(infoPosition) == 4) {
     msg +=
       "\n4 - Quantidade de quartos: " +
       immobilePropertiesList[selectedRegistry - 1].bedroomsQuantity;
-    newInfoValue = prompt(msg);
-    if (Object.is(newInfoValue, null)) {
-      return;
-    }
-
-    while (
-      isNaN(newInfoValue) ||
-      newInfoValue.length === 0 ||
-      !newInfoValue.trim()
-    ) {
-      newInfoValue = prompt("POR FAVOR, INSIRA APENAS NÚMEROS.\n" + msg);
-      if (Object.is(newInfoValue, null)) {
-        return;
-      }
-    }
+    newInfoValue = registryNumberInfoValidate(msg);
 
     immobilePropertiesList[selectedRegistry - 1].bedroomsQuantity =
       newInfoValue;
   }
+
   if (Number(infoPosition) == 5) {
     msg +=
       "\n5 - Quantidade de banheiros: " +
       immobilePropertiesList[selectedRegistry - 1].bathroomsQuantity;
-    newInfoValue = prompt(msg);
-    if (Object.is(newInfoValue, null)) {
-      return;
-    }
-
-    while (
-      isNaN(newInfoValue) ||
-      newInfoValue.length === 0 ||
-      !newInfoValue.trim()
-    ) {
-      newInfoValue = prompt("POR FAVOR, INSIRA APENAS NÚMEROS.\n" + msg);
-      if (Object.is(newInfoValue, null)) {
-        return;
-      }
-    }
+    newInfoValue = registryNumberInfoValidate(msg);
 
     immobilePropertiesList[selectedRegistry - 1].bathroomsQuantity =
       newInfoValue;
   }
+
   if (Number(infoPosition) == 6) {
     msg +=
       "\n6 - Possui garagem? " +
       (immobilePropertiesList[selectedRegistry - 1].hasGarage ? "Sim" : "Não") +
       '\n\nClique em OK para "SIM" ou Cancelar para "NÃO"';
-    newInfoValue = confirm(msg);
 
-    immobilePropertiesList[selectedRegistry - 1].hasGarage = newInfoValue;
+    immobilePropertiesList[selectedRegistry - 1].hasGarage = confirm(msg);
   }
   if (Number(infoPosition) == 7) {
     msg +=
@@ -546,9 +427,8 @@ function changeInfoField(selectedRegistry, infoPosition) {
         ? "Sim"
         : "Não") +
       '\n\nClique em OK para "SIM" ou Cancelar para "NÃO"';
-    newInfoValue = confirm(msg);
 
-    immobilePropertiesList[selectedRegistry - 1].hasBackyard = newInfoValue;
+    immobilePropertiesList[selectedRegistry - 1].hasBackyard = confirm(msg);
   }
 }
 

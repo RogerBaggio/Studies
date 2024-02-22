@@ -36,7 +36,7 @@ let clnInpt = "Ótimo, só eu, que os omito.";
 console.log(clnInpt);
 clnInpt = clnInpt.toLowerCase();
 console.log(clnInpt);
-clnInpt = clnInpt.replace(/[\s.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+clnInpt = clnInpt.replace(/[.,\/#!?[$%\^&\*;:{}=\-_`~()|/+@º°§\]]/g, ""); 
 console.log(clnInpt);
 clnInpt = clnInpt.normalize("NFD");
 console.log(clnInpt);
@@ -104,5 +104,43 @@ function arrayShuffle(array) {
   }
   return array;
 }*/
+
+//---Mock para exercicio10 cadastro de imóveis--->
+
+/*immobilePropertiesList.push(
+  new ImmobileProperty(
+    "Apartamento Butantã",
+    "Roger Baggio",
+    "Rua Prof. Giconda Mussolini 291",
+    2,
+    2,
+    true,
+    false
+  )
+);
+
+var immobileProperty = {
+  name: "Casa ES",
+  owner: "Caroline",
+  address: "Av. Jeronimo Monteiro 1824",
+  bedrooms: 2,
+  bathrooms: 1,
+  garage: false,
+  backyard: true,
+};
+
+immobilePropertiesList.push(
+  new ImmobileProperty(
+    immobileProperty.name,
+    immobileProperty.owner,
+    immobileProperty.address,
+    immobileProperty.bedrooms,
+    immobileProperty.bathrooms,
+    immobileProperty.garage,
+    immobileProperty.backyard
+  )
+);*/
+
+//--- --->
 
 console.log("JS Snipets executado com sucesso.");
