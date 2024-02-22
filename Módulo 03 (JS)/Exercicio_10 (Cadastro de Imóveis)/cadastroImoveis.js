@@ -1,9 +1,7 @@
 console.log("Executando JS...");
 console.log("Cadastro de Imóveis.");
 
-// Main Script >
-
-const immobilePropertiesList = [];
+// Classes & Objects
 
 class ImmobileProperty {
   constructor(name, owner, address, bedrooms, bathrooms, garage, backyard) {
@@ -16,6 +14,10 @@ class ImmobileProperty {
     this.hasBackyard = backyard;
   }
 }
+
+// Main Script >
+
+const immobilePropertiesList = [];
 
 alert(
   "Bem vindo ao Exerício 10 - Cadastro de Imóveis.\n\n" +
