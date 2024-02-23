@@ -238,6 +238,7 @@ function registerProperty() {
   }
 
   immobilePropertiesList.push(prop);
+  alert("Novo imóvel cadastrado com sucesso!");
   return;
 }
 
