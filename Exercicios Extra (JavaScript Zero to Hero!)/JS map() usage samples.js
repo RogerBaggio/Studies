@@ -1,11 +1,12 @@
-//---> uso simples de map()
+//---Uso simples de map()
 const numbers = [2, 4, 6, 8, 10];
 
 const doubles = numbers.map(number => number*number);
 console.log(doubles); //resultado: [4, 16, 36, 64, 100]
+//END
 
 
-//---> map() com console em cada iteração 
+//---map() com console em cada iteração 
 //(é necessário utilizar 'return' para atribuir o retorno da função quando {} é utilizado ou o retorno será 'undefined')
 const squares = numbers.map((number, index) => {
     const result = number * number;
@@ -13,9 +14,10 @@ console.log(`Iteração ${index}: ${number}² = ${result}`);
     return result;
 });
 console.log(squares); //resultado: [4, 16, 36, 64, 100]
+//END
 
 
-//---> Utilizando map() para transformar "orders" em lista de "costumers" com datas formatadas
+//---Utilizando map() para transformar "orders" em lista de "costumers" com datas formatadas
 const orders = [
     {id: "13", name: "Roger Baggio",     product: ["Produto tipo 01"],                    value: 10.00, orderDate:"Wed Sep 03 2025 12:23:43", status:"Enviado"},
     {id: "05", name: "Caroline Goltara", product: ["Produto tipo 02", "Produto tipo 04"], value: 60.00, orderDate:"Mon Aug 18 2025 18:44:25", status:"Concluído"},
@@ -34,16 +36,17 @@ const costumers = orders.map(order => ({
 }));
 console.log(costumers); //Log simples 
 //(Possível que alguns consoles exibam apenas "[{…}, {…}, {…}, {…}, {…}]" sem a possibilidade de expandir cada objeto para visualizarmos seu conteudo)
+//END
 
 
-//---> utilizando map() para exibir log dos objetos da lista "costumers" extraida de "orders"!
+//---utilizando map() para exibir log dos objetos da lista "costumers" extraida de "orders"!
 const logs = costumers.map((obj, index) => {
     const log = obj[index];
     console.log(`Índice ${index} - Consumidor: ${obj.costumer}. Data do pedido: ${obj.date}.`)
 });
 
 
-//---> Utilizando map() para resolver o problema two sum
+//---Utilizando map() para resolver o problema two sum
 //(Solução mais eficiente que 2 laços de for aninhados)
 const numbersList = [0, 2, 5, 7, 8];
 const target = 9;
@@ -63,3 +66,4 @@ function sumOfTwo(list, value){
     return result;
 };
 console.log(twoSum); //Resultado esperado [1, 3] (indices dos numeros 2 e 7 na lista, soma resultante é o "target", 9);
+//END

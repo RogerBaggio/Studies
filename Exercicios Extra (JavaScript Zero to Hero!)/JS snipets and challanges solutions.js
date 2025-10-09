@@ -1,6 +1,6 @@
 //Snipets, laboratórios e soluções de desafios comuns de desenvolvimento em JS
 
-//---para calcular idades--->
+//---para calcular idades
 function age(birthdate) {
   const today = new Date();
   const age = today.getFullYear() - birthdate.getFullYear() - 
@@ -8,9 +8,10 @@ function age(birthdate) {
              (today.getMonth() === birthdate.getMonth() && today.getDate() < birthdate.getDate()));
   return age;
 }
+//END
 
 
-//Inversor de strings. Inverte os valores de uma string.
+//---Inversor de strings. Inverte os valores de uma string.
 //Bugproof a não ser que a string contenha uma virgula, que será removida da string invertida...
 let string = "text text";
 console.log("string: " + string);
@@ -24,9 +25,10 @@ let reverseString = Object.values(splitedString)
   .toString()
   .replaceAll(",", "");
 console.log("reverseString: " + reverseString);
+//END
 
 
-//Para remover pontuações, espaços e acentuação de strings e testes para identificar palindromos
+//---Para remover pontuações, espaços e acentuação de strings e testes para identificar palindromos
 let clnInpt = "Ótimo, só eu, que os omito.";
 console.log(clnInpt);
 clnInpt = clnInpt.toLowerCase();
@@ -37,9 +39,10 @@ clnInpt = clnInpt.normalize("NFD");
 console.log(clnInpt);
 clnInpt = clnInpt.replace(/\p{Diacritic}/gu, "");
 console.log(clnInpt);
+//END
 
 
-//Para remover multiplos espaços brancos e normalizar e capitalizar primeira letra de cada palavra da string
+//---Para remover multiplos espaços brancos e normalizar e capitalizar primeira letra de cada palavra da string
 let nameString = "  &*roger-  ,   b'aggio.   js  dEVELOPER  ";
 console.log("Original string: '" + nameString + "'");
 nameString = nameString.replace(/[.,\/#!$%\^&\*;:{}=\-'_`~()]/g, "");
@@ -57,9 +60,10 @@ nameString = nameString
   .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
   .join(" ");
 console.log("Capitalized first letters: '" + nameString + "'");
+//END
 
 
-//Para embaralhar aleatoriamente itens de um array de strings
+//---Para embaralhar aleatoriamente itens de um array de strings
 var cardList = [
   "A ♦", "A ♠", "A ♥", "A ♣",
   "2 ♦", "2 ♠", "2 ♥", "2 ♣",
@@ -87,7 +91,7 @@ function arrayShuffle(array) {
   }
   return array;
 }
-
+//END
 
 //----> LeetCode Easy challanges <----
 
@@ -99,7 +103,7 @@ process.on("exit", () => {
 });
 */
 
-//Palindrome Number challange solution.
+//---Palindrome Number challange solution.
 //INPUTS:
 x = 121; //true
 //x = -121 //false
@@ -115,7 +119,7 @@ console.log(isPalindrome(x));
 //END
 
 
-//Integer to Roman challange solution.
+//---Integer to Roman challange solution.
 //INPUTS:
 //s = "III" //3
 //s = "XIX" //19
@@ -137,12 +141,7 @@ var romanToInt = function(s) {
         expression = expression.replace(new RegExp(roman, 'g'), value);
     }
     return eval(expression);
-};
+};//Bugproof
 
 console.log(romanToInt(s));
-
-/*let int = s.replace("MMM", 3).replace("MM", 2).replace("CM", 9).replace("M", 1).replace("DCCC", 8).replace("DCC", 7).replace("DC", 6).replace("CD", 4).replace("D", 5)
-    .replace("CCC", 3).replace("CC", 2).replace("XC", 9).replace("C", 1).replace("LXXX", 8).replace("LXX", 7).replace("LX", 6).replace("XL", 4).replace("L", 5)
-    .replace("XXX", 3).replace("XX", 2).replace("IX", 9).replace("X", 1).replace("VIII", 8).replace("VII", 7).replace("VI", 6).replace("IV", 4).replace("V", 5)
-    .replace("III", 3).replace("II", 2).replace("I", 1);
-return int;*/
+//END
