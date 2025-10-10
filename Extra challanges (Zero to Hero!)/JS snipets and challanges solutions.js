@@ -93,10 +93,11 @@ function arrayShuffle(array) {
 }
 //END
 
+
 //----> LeetCode Easy challanges <----
 
 //BONUS: leetcode.com runtime always 0ms cheat!
-//Add this snipet to the end very of your code and be a ranking god. ;]
+//Add this snipet to the very end of your code and be a ranking god. ;]
 /*
 process.on("exit", () => {
     require("fs").writeFileSync("display_runtime.txt", "0");
@@ -132,8 +133,9 @@ s = "MMMDCCCVIII" //3808
 
 var romanToInt = function(s) {
  const replacements = [
-        ["CM", "+900"], ["CD", "+400"], ["XC", "+90"], ["XL", "+40"], ["IX", "+9"], ["IV", "+4"],
-        ["M", "+1000"], ["D", "+500"], ["C", "+100"], ["L", "+50"], ["X", "+10"], ["V", "+5"], ["I", "+1"]
+        ["CM", "+900"], ["CD", "+400"], ["XC", "+90"], ["XL", "+40"],
+        ["IX", "+9"], ["IV", "+4"], ["M", "+1000"], ["D", "+500"],
+        ["C", "+100"], ["L", "+50"], ["X", "+10"], ["V", "+5"], ["I", "+1"]
     ];
     
     let expression = s;
@@ -141,7 +143,47 @@ var romanToInt = function(s) {
         expression = expression.replace(new RegExp(roman, 'g'), value);
     }
     return eval(expression);
-};//Bugproof
+};//Bugproof version
 
 console.log(romanToInt(s));
+//END
+
+
+//---Roman to Integer challange solution.
+//INPUTS:
+//int = 3 //"III"
+int = 10 //"X"
+//int = 19 //"XIX"
+//int = 58 //"LVIII"
+//int = 100 //"C"
+//int = 1000 //"M"
+//int = 1095 //MXCV
+//int = 1995 //MCMXCV
+//int = 1994 //"MCMXCIV"
+//int = 1444 //"MCDXLIV"
+//int = 1884 //"MDCCCLXXXIV"
+//int = 3808 //"MMMDCCCVIII"
+//int = 3888 //"MMMDCCCLXXXVIII"
+
+var intToRoman = function(int) {
+  //decompondo o inteiro em por suas casas decimais
+  let decomposedInput = int.toString().split("");//convertendo para string e dividindo em um array
+      console.log("convertendo para string e dividindo em um array: "+ decomposedInput);
+      decomposedInput = decomposedInput.map((num, i) => num != 0? num * Math.pow(10, decomposedInput.length - 1 - i): "/" + num);//multiplicando por 10 elevado ao indice
+      console.log("multiplicando por 10 elevado ao indice: "+ decomposedInput);
+      decomposedInput = decomposedInput.join("");//concatenando todo o valor decomposto 
+      console.log("//concatenando todo o valor decomposto: " + decomposedInput);
+  
+  //Substituindo todas as incidencias em ordem de complexidade/subtrações primeiro
+  let roman = decomposedInput.replace(3000, "MMM").replace(2000, "MM").replace(900, "CM").replace(1000, "M").replace(800, "DCCC")
+          .replace(700, "DCC").replace(600, "DC").replace(400, "CD").replace(500, "D").replace(300, "CCC").replace(200, "CC")
+          .replace(90, "XC").replace(100, "C").replace(80, "LXXX").replace(70, "LXX").replace(60, "LX").replace(40, "XL")
+          .replace(50, "L").replace(30, "XXX").replace(20, "XX").replace(9, "IX").replace(10, "X").replace(8, "VIII")
+          .replace(7, "VII").replace(6, "VI").replace(4, "IV").replace(5, "V").replace(3, "III").replace(2, "II").replace(1, "I")
+          .replaceAll("/0", ""); //removendo todos os /0 resquicios ao final
+
+  return roman;
+};
+
+console.log(intToRoman(int));
 //END
