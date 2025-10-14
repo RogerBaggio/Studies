@@ -1,3 +1,11 @@
+//Estrutura básica e parametros da função array.map():
+/*
+array.map((elemento, índice, arrayOriginal) => {
+    <sua logica de transformação aqui>
+    return novoElemento;
+})
+*/
+
 //---Uso simples de map()
 const numbers = [2, 4, 6, 8, 10];
 
@@ -10,7 +18,7 @@ console.log(doubles); //resultado: [4, 16, 36, 64, 100]
 //(é necessário utilizar 'return' para atribuir o retorno da função quando {} é utilizado ou o retorno será 'undefined')
 const squares = numbers.map((number, index) => {
     const result = number * number;
-console.log(`Iteração ${index}: ${number}² = ${result}`);
+    console.log(`Iteração ${index}: ${number}² = ${result}`);
     return result;
 });
 console.log(squares); //resultado: [4, 16, 36, 64, 100]
@@ -46,7 +54,7 @@ const logs = costumers.map((obj, index) => {
 });
 
 
-//---Utilizando map() para resolver o problema two sum
+//---Utilizando map() para resolver o problema two sum (https://leetcode.com/problems/two-sum)
 //(Solução mais eficiente que 2 laços de for aninhados)
 const numbersList = [0, 2, 5, 7, 8];
 const target = 9;
