@@ -1,4 +1,4 @@
-/*Snipets, laboratórios e soluções de desafios comuns de desenvolvimento em JS
+/*Snippets, laboratórios e soluções de desafios comuns de desenvolvimento em JS
 
 ---> Observações a se levar em consideração para executar seus testes <---
 **Descomente e debugue apenas uma linha dos inputs por teste. ;]
