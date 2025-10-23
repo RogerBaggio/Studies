@@ -9,7 +9,7 @@ VARIÁVEIS:
 "let": NÃO pode ser acessada fora de seu escopo, NÃO pode ser referida antes de inicializada e após iniciadas/atribuidas, pode receber novos valores ou, mas NÃO podem ser redeclaradas.
 */
 
-//---Calculador de idade.
+//---01 Calculador de idade.
 //INPUTS:
 var birthDate = new Date("12/15/1991");
 //const birthDate = new Date("06/21/2012");
@@ -23,14 +23,14 @@ function ageCalc(brthdt) {
   return age;
 }
 
-console.log('Nascidos na data de "' + birthDate.toLocaleDateString('pt-BR')+ '" possuem ' + ageCalc(birthDate) + " anos de idade atualmente.");
+console.log('01 - Nascidos na data de "' + birthDate.toLocaleDateString('pt-BR')+ '" possuem ' + ageCalc(birthDate) + " anos de idade atualmente.");
 //END
 
 
-//---Inversor de string.
+//---02 Inversor de string.
 //INPUTS:
 //var string = "text txet.";
-var string = "O rato roeu a roupa do rei de roma.";
+const stringToInvert = "O rato roeu a roupa do rei de roma.";
 
 function revertString(str){
   let reverseString = str.split("")//transforma a string em um array de caracter por caracter
@@ -40,16 +40,16 @@ function revertString(str){
   return reverseString;
 };
 
-console.log("String invertida: " + revertString(string));
+console.log("02 - String invertida: " + revertString(stringToInvert));
 //END
 
 
-//---Para remover pontuações, espaços e acentuação de strings
+//---03 Removedor pontuações, espaços e acentuação de strings
 //INPUTS:
 var rawString = "Será então inter-hemisférico.";
 //var rawString = "Será que são órgãos!?";
 
-function removeStringPunctiations(str){
+function removeStringPunctuations(str){
   let processedStr = str.replace(/[.,\/#!?[$%\^&\*;:{}=\-_`~()|/+@º°§\]]/g, "") //remove toda pontuação e sinalização da string
     .normalize("NFD") //separa todos os caracteres de suas respectivas acentuações (não é visual no console, mas a string resultante é diferente!)
     .replace(/\p{Diacritic}/gu, ""); //remove todas as acentuações
@@ -57,11 +57,11 @@ function removeStringPunctiations(str){
   return processedStr;
 };
 
-console.log('String com todos acentos e pontuações removidas: "' + removeStringPunctiations(rawString) + '".');
+console.log('03 - String com todos acentos e pontuações removidas: "' + removeStringPunctuations(rawString) + '".');
 //END
 
 
-//---Para testar e identificar se uma string é um palindromo
+//---04 Para testar e identificar se uma string é um palindromo
 //INPUTS:
 //const palindromeString = "Radar."; //true
 const palindromeString = "Socorram-me, subi no ônibus em Marrocos."; //true
@@ -70,7 +70,7 @@ const palindromeString = "Socorram-me, subi no ônibus em Marrocos."; //true
 function testIfPalindrome(str){
   let isPalindrome = false;
 
-  let clearStr = removeStringPunctiations(str).replaceAll(" ","").toLowerCase();//Remove todas as pontuações e espaços da string e torna minúsculo todas seus caracteres
+  let clearStr = removeStringPunctuations(str).replaceAll(" ","").toLowerCase();//Remove todas as pontuações e espaços da string e torna minúsculo todas seus caracteres
   let reverseStr = revertString(clearStr); //Inverte toda a ordem de caracteres da string normalizada
 
   if(clearStr == reverseStr){
@@ -80,11 +80,11 @@ function testIfPalindrome(str){
   return isPalindrome;
 };
 
-console.log('"' + palindromeString + '" é um palíndromo? ' + testIfPalindrome(palindromeString).toString().toUpperCase() + ".");
+console.log('04 - "' + palindromeString + '" é um palíndromo? ' + testIfPalindrome(palindromeString).toString() + ".");
 //END
 
 
-//---Para remover espaços brancos, normalizar e capitalizar primeira letra de cada palavra da string
+//---05 Para remover espaços brancos, normalizar e capitalizar primeira letra de cada palavra da string
 //INPUTS:
 const strangeFormattedString = "  &*roger-  ,   b'aggio.   js  dEVELOPER  ";
 
@@ -99,17 +99,19 @@ function normalizeAndCapitalizeString(str){
   return normCapStr;
 };
 
-console.log("String Original: '" + strangeFormattedString + "'");
-console.log(normalizeAndCapitalizeString(strangeFormattedString));
+console.log('05 - String original: "' + strangeFormattedString + '" String tratada: "' + normalizeAndCapitalizeString(strangeFormattedString) + '".');
 //END
 
 
-//---Para embaralhar aleatoriamente itens de um array de strings
+//---06 Para embaralhar aleatoriamente itens de um array de strings
 //INPUTS
-const stringArray = ["A ♦", "A ♠", "A ♥", "A ♣", "2 ♦", "2 ♠", "2 ♥", "2 ♣", "3 ♦", "3 ♠", "3 ♥", "3 ♣", "4 ♦", "4 ♠", "4 ♥", "4 ♣"];
 //const stringArray = ["Abacaxi", "Banana", "Caju", "Damasco", "Embaúba", "Figo", "Goiaba", "Heisteria", "Ingá", "Jabuticaba"];
+const stringArray = ["A ♦", "A ♠", "A ♥", "A ♣", "2 ♦", "2 ♠", "2 ♥", "2 ♣", "3 ♦", "3 ♠", "3 ♥", "3 ♣", "4 ♦", "4 ♠", "4 ♥", "4 ♣"];
+//const stringArray = [];
 
 function arrayShuffle(array) {
+  if (array.length === 0) return "";
+
   let currentIndex = array.length;
   let randomIndex;
 
@@ -121,7 +123,7 @@ function arrayShuffle(array) {
   return array;
 }
 
-console.log(arrayShuffle(stringArray));
+console.log('06 - O seguinte array foi embaralhado: "' + arrayShuffle(stringArray).join(", ")+'"');
 //END
 
 //----> LeetCode challanges <----
@@ -134,7 +136,7 @@ process.on("exit", () => {
 });
 */
 
-//---Palindrome Number challange solution. (https://leetcode.com/problems/palindrome-number)
+//---07 Palindrome Number challange solution. (https://leetcode.com/problems/palindrome-number)
 //INPUTS:
 const palindromeNumber = 121; //true
 //const palindromeNumber = -121 //false
@@ -146,11 +148,11 @@ var isPalindromeNumber = function(x) {
     return result;
 };
 
-console.log(isPalindromeNumber(palindromeNumber));
+console.log('07 - O número "'+ palindromeNumber +'" é um palíndromo? '+ isPalindromeNumber(palindromeNumber));
 //END
 
 
-//---Integer to Roman challange solution. (https://leetcode.com/problems/integer-to-roman)
+//---08 Integer to Roman challange solution. (https://leetcode.com/problems/integer-to-roman)
 //INPUTS:
 //const rom = "III" //3
 //const rom = "XIX" //19
@@ -171,16 +173,16 @@ var romanToInt = function(str) {
   return eval(expression);
 };
 
-console.log(romanToInt(rom));
+console.log('08 - O algarismo romano "'+ rom +'" equivale a "'+romanToInt(rom)+'" em algarismos decimais.');
 //END
 
 
-//---Roman to Integer challange solution. (https://leetcode.com/problems/roman-to-integer)
+//---09 Roman to Integer challange solution. (https://leetcode.com/problems/roman-to-integer)
 //INPUTS:
 //const int = 3 //"III"
 //const int = 19 //"XIX"
 //const int = 58 //"LVIII"
-//const int = 1095 //MXCV
+const int = 1095 //MXCV
 //const int = 3808 //"MMMDCCCVIII"
 //const int = 3888 //"MMMDCCCLXXXVIII"
 
@@ -200,23 +202,79 @@ var intToRoman = function(int) {
   return roman;
 };
 
-console.log(intToRoman(int));
+console.log('09 - O algarismo decimal "'+ int +'" equivale a "'+intToRoman(int)+'" em algarismos romanos.');
 //END
 
 
-//---Longest Common Prefix challange solution. (https://leetcode.com/problems/longest-common-prefix)
+//---10 Longest Common Prefix challange solution. (https://leetcode.com/problems/longest-common-prefix)
 //INPUTS:
 //const strs = [];
 //const strs = ["flower","flow","flight"]; //"fl"
 //const strs = ["dog","racecar","car"]; //""
-const strs = ["Roger", "Rogerio", "Rodrigo", "Rodolfo", "Roberto"];
+const strs = ["Rogerito", "Roger", "Rogerio"]; //"Roger"
+//const strs = ["Caroline", "Coraline", "Coral", "", "Carolina"]; //""
 
 var longestCommonPrefix = function(strs) {
-  let sortedStrings = strs.sort();
+  if (strs.length === 0) return ""; //avoiding empty array errors
+    
+  const firstStr = strs[0];
+    
+  //Mapping each character position with boolean
+  const commonChars = firstStr.split('').map((char, index) => {
+    return strs.every(str => str[index] === char);
+  });
+    
+  //Looking for the first false index
+  const firstFalseIndex = commonChars.indexOf(false);
 
-  return sortedStrings;
+  return firstFalseIndex === -1 ? firstStr : firstStr.slice(0, firstFalseIndex);
 };
 
-console.log(longestCommonPrefix(strs));
+console.log('10 - O maior prefixo comum da lista "'+ strs.join(", ")+'" é "'+longestCommonPrefix(strs)+'"');
 //END
  
+
+//---11 Valid Parentheses challange solution. (https://leetcode.com/problems/valid-parentheses)
+//BONUS: Added a treatment for quotation marks and commentation: "", '' and /* */.
+//INPUTS:
+//const stringToParenthesesCheck = "()[]{}" //true
+//const stringToParenthesesCheck = "([)]" //false
+//const stringToParenthesesCheck = "function test() { return [1, 2, 3]; } /*'this (is a) test'*/"+'/*"Another [Comment]"*/' //true
+const stringToParenthesesCheck = "[" //false
+
+var isParenthesesValid = function(s) {
+  //Mapeando pares para conferencia posterior
+  let matchingPairsMap = {
+    ")": "(",
+    "]": "[",
+    "}": "{",
+    "*/": "/*",
+    "'": "'",
+    '"': '"'
+  };
+  let incidencesArray = s.match(/(\/\*|\*\/|[(){}[\]'"])/g); //Simplificando string em array de ocorrencias de sinais tratados
+  let incidencesMatchesControl = []; //controle em pilha/stacking
+
+  for (i in incidencesArray) {
+    console.log("incidencesMatchesControl atual: "+incidencesMatchesControl)
+    //Conferindo se abertura ou fechamento (tratamento adaptado em caso de " e ')
+    if (incidencesArray[i] === "(" || incidencesArray[i] === "[" || incidencesArray[i] === "{" || incidencesArray[i] === "/*" ||
+    incidencesArray[i] === "'" && incidencesMatchesControl.at(-1) !== "'" || incidencesArray[i] === '"' && incidencesMatchesControl.at(-1) !== '"'){
+      //Se abertura, adiciona ocorrencia a pilha de controle
+      incidencesMatchesControl.push(incidencesArray[i]);
+    
+    } else {
+      //se fechamento, remove ocorrencia anterior da pilha
+      let previousIncidence = incidencesMatchesControl.pop();
+
+      if (previousIncidence !== matchingPairsMap[incidencesArray[i]]){
+        //se ocorrencia anterior nao é par da ocorrencia de fechamento atual, foi identificado que a string é inválida 
+        return false;
+      }
+    }
+  }
+  //Se a pilha de controle estiver vazia, tudo foi aberto e fechado corretamente
+  return incidencesMatchesControl.length>0?false:true;
+};
+
+console.log('11 - A string "' + stringToParenthesesCheck + '" tem aberturas e fechamentos corretamente? ' +isParenthesesValid(stringToParenthesesCheck));
