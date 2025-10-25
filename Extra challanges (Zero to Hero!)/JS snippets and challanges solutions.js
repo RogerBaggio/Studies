@@ -238,9 +238,9 @@ console.log('10 - O maior prefixo comum da lista "'+ strs.join(", ")+'" é "'+lo
 //BONUS: Added a treatment for quotation marks and commentation: "", '' and /* */.
 //INPUTS:
 //const stringToParenthesesCheck = "()[]{}" //true
-//const stringToParenthesesCheck = "([)]" //false
+const stringToParenthesesCheck = "([)]" //false
 //const stringToParenthesesCheck = "function test() { return [1, 2, 3]; } /*'this (is a) test'*/"+'/*"Another [Comment]"*/' //true
-const stringToParenthesesCheck = "[" //false
+//const stringToParenthesesCheck = "[" //false
 
 var isParenthesesValid = function(s) {
   //Mapeando pares para conferencia posterior
@@ -278,3 +278,62 @@ var isParenthesesValid = function(s) {
 };
 
 console.log('11 - A string "' + stringToParenthesesCheck + '" tem aberturas e fechamentos corretamente? ' +isParenthesesValid(stringToParenthesesCheck));
+
+
+//---12 Merge Two Sorted Lists challange solution. (https://leetcode.com/problems/merge-two-sorted-lists)
+//INPUTS:
+//const numberList1 = [1,2,4], numberList2 = [1,3,4] // [1,1,2,3,4,4]
+//const numberList1 = [], numberList2 = [] // []
+//const numberList1 = [], numberList2 = [0] // [0]
+const numberListNode1 = [1,2,40], numberListNode2 = [10,3,4] // [1,2,3,4,10,40]
+
+var mergeTwoArrayLists = function(list1, list2) { //Em caso de dois arrays basicos, a solução exercício é simples
+  let sortedList = [...list1,...list2].sort(function(num1, num2){return num1 - num2}); //Usando array spread([...array]) para unir os arrays e entao sort() + filtro a-b para ordenação crescente
+  return sortedList;
+};
+console.log('12.a - Listas foram ordenadas em: '+ mergeTwoArrayLists(numberListNode1, numberListNode2));
+
+//Definition for singly-linked list from LeetCode Challange (using a linked list logic solution)
+function ListNode(val, next) { //Function para criação de um objeto linkado
+  this.val = val === undefined ? 0 : val;
+  this.next = next === undefined ? null : next;
+}
+
+var mergeTwoListNodes = function(list1, list2) {
+  let array1, array2, sortedArray; //instanciando arrays vazios
+  array1 = listNodeToArrayFDS(list1); //convertendo listNode1 para manipulaçao em array
+  array2 = listNodeToArrayFDS(list2); //convertendo listNode2 para manipulaçao em array
+  sortedArray = [...array1,...array2].sort(function(num1, num2){return num1 - num2}); //Usando array spread([...array]) para unir os arrays e entao sort() + filtro a-b para ordenação crescente
+
+  return arrayToListNodeFDS(sortedArray); //Convertendo array ordenado em linked list (ListNode) novamente
+};
+
+function listNodeToArrayFDS(listNode){ //Função para converter ListNode em array simples
+  let currentNode = listNode;
+  let array = [];
+
+  while (currentNode){ //Enquanto o objeto atual nao for inválido (null/undefined) adiciona item atual ao fim do array
+    array.push(currentNode.val);
+    currentNode = currentNode.next;
+  }
+  return array;
+}
+
+function arrayToListNodeFDS(array){ //Função para converter array simples em ListNode
+  if (!array || array.length == 0) { //Evitando erros por arrays vazios
+    return null;
+  }
+
+  let listNodeHead = new ListNode(array[0]);
+  let currentNode = listNodeHead;
+
+  for (let i = 1; i < array.length; i++) { //Concatenando objetos enquanto houver um próximo
+    currentNode.next = new ListNode(array[i]);
+    currentNode = currentNode.next;
+  }
+
+  return listNodeHead;
+}
+
+console.log('12.b - Listas foram ordenadas em: '+ JSON.stringify(mergeTwoListNodes(arrayToListNodeFDS(numberListNode1), arrayToListNodeFDS(numberListNode2)))); //É necessário converter objeto para JSON para visualizar como string no console!
+//END
