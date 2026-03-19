@@ -291,7 +291,10 @@ var mergeTwoArrayLists = function(list1, list2) { //Em caso de dois arrays basic
   let sortedList = [...list1,...list2].sort(function(num1, num2){return num1 - num2}); //Usando array spread([...array]) para unir os arrays e entao sort() + filtro a-b para ordenação crescente
   return sortedList;
 };
+
 console.log('12.a - Listas foram ordenadas em: '+ mergeTwoArrayLists(numberListNode1, numberListNode2));
+//END 12.a
+
 
 //Definition for singly-linked list from LeetCode Challange (using a linked list logic solution)
 function ListNode(val, next) { //Function para criação de um objeto linkado
@@ -335,5 +338,6 @@ function arrayToListNodeFDS(array){ //Função para converter array simples em L
   return listNodeHead;
 }
 
-console.log('12.b - Listas foram ordenadas em: '+ JSON.stringify(mergeTwoListNodes(arrayToListNodeFDS(numberListNode1), arrayToListNodeFDS(numberListNode2)))); //É necessário converter objeto para JSON para visualizar como string no console!
-//END
+console.log('12.b - Listas foram ordenadas em: '+ JSON.stringify(mergeTwoListNodes(arrayToListNodeFDS(numberListNode1), arrayToListNodeFDS(numberListNode2)))); 
+//É necessário converter objeto para JSON para visualizar como string no console!
+//END 12.b
