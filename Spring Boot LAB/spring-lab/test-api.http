@@ -2,6 +2,9 @@
 ### SPRING LAB - API TEST SUITE
 ### ============================================
 
+### 0. Test ENDPOINT
+GET http://localhost:8080/ping
+
 ### 1. Health Check - Hello World
 GET http://localhost:8080/api/v1/users/hello?name=SpringHero
 
