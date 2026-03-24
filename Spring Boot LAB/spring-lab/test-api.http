@@ -1,0 +1,56 @@
+### ============================================
+### SPRING LAB - API TEST SUITE
+### ============================================
+
+### 1. Health Check - Hello World
+GET http://localhost:8080/api/v1/users/hello?name=SpringHero
+
+### 2. Listar todos usuários (inicialmente vazio)
+GET http://localhost:8080/api/v1/users
+
+### 3. Criar primeiro usuário
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+    "name": "João Silva",
+    "email": "joao.silva@email.com"
+}
+
+### 4. Criar segundo usuário
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+    "name": "Maria Santos",
+    "email": "maria.santos@email.com"
+}
+
+### 5. Criar terceiro usuário
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+    "name": "Pedro Oliveira",
+    "email": "pedro.oliveira@email.com"
+}
+
+### 6. Listar todos usuários (agora com dados)
+GET http://localhost:8080/api/v1/users
+
+### 7. Teste de erro - Tentar criar usuário sem email (vai falhar)
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+    "name": "Usuário Inválido"
+}
+
+### 8. Teste de erro - Email inválido
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+    "name": "Teste",
+    "email": "email-invalido"
+}
