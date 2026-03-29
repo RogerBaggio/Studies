@@ -1,6 +1,6 @@
 package com.rojudo.spring_lab.controller;
 
-import com.rojudo.spring_lab.model.UserDTO;
+import com.rojudo.spring_lab.dto.UserDTO;
 import com.rojudo.spring_lab.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;

@@ -2,17 +2,24 @@
 ### SPRING LAB - API TEST SUITE
 ### ============================================
 
+@baseUrl = http://localhost:8080/api/v1
+@contentType = application/json
+
 ### 0. Test ENDPOINT
 GET http://localhost:8080/ping
 
+### ============================================
+### USER API TEST SUITE
+### ============================================
+
 ### 1. Health Check - Hello World
-GET http://localhost:8080/api/v1/users/hello?name=SpringHero
+GET {{baseUrl}}/users/hello?name=SpringHero
 
 ### 2. Listar todos usuários (inicialmente vazio)
-GET http://localhost:8080/api/v1/users
+GET {{baseUrl}}/users
 
 ### 3. Criar primeiro usuário
-POST http://localhost:8080/api/v1/users
+POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
@@ -21,7 +28,7 @@ Content-Type: application/json
 }
 
 ### 4. Criar segundo usuário
-POST http://localhost:8080/api/v1/users
+POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
@@ -30,7 +37,7 @@ Content-Type: application/json
 }
 
 ### 5. Criar terceiro usuário
-POST http://localhost:8080/api/v1/users
+POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
@@ -39,10 +46,10 @@ Content-Type: application/json
 }
 
 ### 6. Listar todos usuários (agora com dados)
-GET http://localhost:8080/api/v1/users
+GET {{baseUrl}}/users
 
 ### 7. Teste de erro - Tentar criar usuário sem email (vai falhar)
-POST http://localhost:8080/api/v1/users
+POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
@@ -50,10 +57,86 @@ Content-Type: application/json
 }
 
 ### 8. Teste de erro - Email inválido
-POST http://localhost:8080/api/v1/users
+POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
     "name": "Teste",
     "email": "email-invalido"
 }
+
+### ============================================
+### PRODUCT API TEST SUITE
+### ============================================
+
+### 1. CREATE - Criar novo produto
+POST {{baseUrl}}/products
+Content-Type: {{contentType}}
+
+{
+    "sku": "TEST-001",
+    "name": "Produto Teste",
+    "description": "Descrição do produto teste",
+    "price": 99.90,
+    "category": "Testes",
+    "stockQuantity": 100
+}
+
+### 2. READ ALL - Listar todos produtos (paginado)
+GET {{baseUrl}}/products?page=0&size=10
+
+### 3. READ ACTIVE - Listar produtos ativos
+GET {{baseUrl}}/products/active
+
+### 4. READ BY ID - Buscar produto específico
+GET {{baseUrl}}/products/1
+
+### 5. READ BY SKU - Buscar por SKU
+GET {{baseUrl}}/products/sku/TEST-001
+
+### 6. SEARCH - Buscar por nome
+GET {{baseUrl}}/products/search?name=teste
+
+### 7. PRICE RANGE - Buscar por faixa de preço
+GET {{baseUrl}}/products/price-range?minPrice=100&maxPrice=500
+
+### 8. UPDATE - Atualizar produto
+PUT {{baseUrl}}/products/1
+Content-Type: {{contentType}}
+
+{
+    "sku": "TEST-001-UPDATED",
+    "name": "Produto Teste Atualizado",
+    "description": "Descrição atualizada",
+    "price": 149.90,
+    "category": "Testes Especiais",
+    "stockQuantity": 150
+}
+
+### 9. UPDATE STOCK - Atualizar estoque (PATCH)
+PATCH {{baseUrl}}/products/1/stock?quantity=50
+
+### 10. TOGGLE ACTIVE - Ativar/Desativar produto
+PATCH {{baseUrl}}/products/1/toggle-active
+
+### 11. BULK UPDATE - Atualização em lote
+PATCH {{baseUrl}}/products/bulk/price-update?category=Eletrônicos&percentage=10
+
+### 12. DELETE - Soft delete (desativar)
+DELETE {{baseUrl}}/products/2
+
+### 13. VALIDATION ERROR - Teste de validação
+POST {{baseUrl}}/products
+Content-Type: {{contentType}}
+
+{
+    "sku": "",
+    "name": "",
+    "price": -10
+}
+
+### 14. NOT FOUND - Teste de recurso inexistente
+GET {{baseUrl}}/products/999
+
+### 15. HARD DELETE - Remoção permanente (cuidado!)
+DELETE {{baseUrl}}/products/1/hard

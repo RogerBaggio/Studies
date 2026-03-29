@@ -1,0 +1,11 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop  # Recria banco a cada execução
+  datasource:
+    url: jdbc:h2:mem:springlabdb
+
+# Ativa o DataInitializer
+data:
+  initializer:
+    enabled: true

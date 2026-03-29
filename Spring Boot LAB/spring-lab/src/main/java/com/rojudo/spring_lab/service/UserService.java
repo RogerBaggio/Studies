@@ -1,6 +1,6 @@
 package com.rojudo.spring_lab.service;
 
-import com.rojudo.spring_lab.model.UserDTO;
+import com.rojudo.spring_lab.dto.UserDTO;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.ArrayList;
