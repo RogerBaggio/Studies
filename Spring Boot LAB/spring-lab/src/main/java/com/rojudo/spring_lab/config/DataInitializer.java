@@ -5,13 +5,17 @@ import com.rojudo.spring_lab.repository.ProductRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
   DATA INITIALIZER
@@ -23,106 +27,100 @@ import java.util.List;
   - Inicializar configurações padrão
   - Testes de carga iniciais
   
-  @Profile("dev") - Só executa em ambiente de desenvolvimento
+  @Profile("dev") - Para só executar em ambiente de desenvolvimento etc...
  */
 @Component
-@Profile("dev") // Executa apenas quando o profile "dev" está ativo
+@Profile("!test")  // Não executa em testes
 public class DataInitializer implements CommandLineRunner {
     
-    private static final Logger logger = LoggerFactory.getLogger(DataInitializer.class);
-    
-    private final ProductRepository productRepository;
+    private static final Logger log = LoggerFactory.getLogger(DataInitializer.class);
     
     @Autowired
-    public DataInitializer(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    private ProductRepository productRepository;
     
-    // Método executado após a aplicação iniciar
+    @Value("${app.data.initialize:true}")
+    private boolean shouldInitialize;
+    
+    @Value("${app.data.load-sample:true}")
+    private boolean loadSampleData;
+    
     @Override
-    public void run(String... args) throws Exception {
-        logger.info("🚀 Iniciando DataInitializer...");
-        
-        // Verifica se já existem dados
-        if (productRepository.count() > 0) {
-            logger.info("Banco já possui {} produtos. Pulando inicialização.", productRepository.count());
+    @Transactional
+    public void run(String... args) {
+        if (!shouldInitialize) {
+            log.info("Data initialization disabled");
             return;
         }
         
-        // Cria produtos de exemplo
-        createSampleProducts();
+        long count = productRepository.count();
+        if (count > 0) {
+            log.info("Database already contains {} products. Skipping initialization.", count);
+            return;
+        }
         
-        logger.info("DataInitializer finalizado com sucesso!");
+        log.info("Initializing database with sample data...");
+        
+        if (loadSampleData) {
+            loadSampleProducts();
+        }
+        
+        log.info("✅ Database initialized with {} products", productRepository.count());
     }
     
-    //Cria produtos de exemplo
-    private void createSampleProducts() {
-        logger.info("Criando produtos de exemplo...");
-        
-        // Eletrônicos
-        Product notebook = new Product("NOTE-DELL-XPS13", "Notebook Dell XPS 13", new BigDecimal("7899.99"));
-        notebook.setDescription("Notebook Dell XPS 13, Intel Core i7, 16GB RAM, 512GB SSD, Windows 11");
-        notebook.setCategory("Eletrônicos");
-        notebook.setStockQuantity(15);
-        
-        Product macbook = new Product("MAC-MBA-M1", "MacBook Air M1", new BigDecimal("8999.99"));
-        macbook.setDescription("MacBook Air com chip M1, 8GB RAM, 256GB SSD");
-        macbook.setCategory("Eletrônicos");
-        macbook.setStockQuantity(10);
-        
-        Product monitor = new Product("MON-DELL-U2723", "Monitor Dell UltraSharp U2723", new BigDecimal("3299.99"));
-        monitor.setDescription("Monitor 27 polegadas, 4K, USB-C, 60Hz");
-        monitor.setCategory("Eletrônicos");
-        monitor.setStockQuantity(8);
-        
-        // Acessórios
-        Product mouse = new Product("MOU-LOG-MX3", "Mouse Logitech MX Master 3S", new BigDecimal("549.99"));
-        mouse.setDescription("Mouse sem fio, ergonômico, 3 dispositivos, silencioso");
-        mouse.setCategory("Acessórios");
-        mouse.setStockQuantity(50);
-        
-        Product teclado = new Product("TEC-KEY-K2", "Teclado Keychron K2", new BigDecimal("699.99"));
-        teclado.setDescription("Teclado mecânico, wireless, RGB, 75%");
-        teclado.setCategory("Acessórios");
-        teclado.setStockQuantity(25);
-        
-        Product webcam = new Product("WEBCAM-LOG-C920", "Webcam Logitech C920", new BigDecimal("399.99"));
-        webcam.setDescription("Webcam Full HD, microfone integrado, gravação 1080p");
-        webcam.setCategory("Acessórios");
-        webcam.setStockQuantity(12);
-        
-        // Periféricos
-        Product headset = new Product("HEAD-SON-WH4", "Headset Sony WH-1000XM4", new BigDecimal("1899.99"));
-        headset.setDescription("Headset com cancelamento de ruído, Bluetooth, 30h de bateria");
-        headset.setCategory("Áudio");
-        headset.setStockQuantity(20);
-        
-        Product caixaSom = new Product("SPK-JBL-FLIP6", "Caixa de Som JBL Flip 6", new BigDecimal("599.99"));
-        caixaSom.setDescription("Caixa de som Bluetooth, resistente à água, 12h de bateria");
-        caixaSom.setCategory("Áudio");
-        caixaSom.setStockQuantity(30);
-        
-        // Armazena todos os produtos
+    private void loadSampleProducts() {
         List<Product> products = Arrays.asList(
-            notebook, macbook, monitor,
-            mouse, teclado, webcam,
-            headset, caixaSom
+            createProduct("NOTE-001", "Notebook Dell XPS 13", 
+                "Notebook Dell XPS 13, Intel Core i7, 16GB RAM, 512GB SSD", 
+                new BigDecimal("4599.99"), "Eletrônicos", 15,
+                new String[]{"notebook", "dell", "premium"},
+                createMetadata("color", "prata", "warranty", "12 meses")),
+            
+            createProduct("MOUSE-001", "Mouse Logitech MX Master 3S", 
+                "Mouse sem fio, ergonômico, 8K DPI, compatível com Mac e Windows",
+                new BigDecimal("349.90"), "Acessórios", 50,
+                new String[]{"mouse", "logitech", "wireless"},
+                createMetadata("color", "preto", "battery", "70 dias")),
+            
+            createProduct("MON-001", "Monitor Dell UltraSharp U2723QE", 
+                "Monitor 27 polegadas, 4K, USB-C Hub, 100% sRGB",
+                new BigDecimal("3299.00"), "Eletrônicos", 8,
+                new String[]{"monitor", "dell", "4k", "usb-c"},
+                createMetadata("resolution", "4K", "size", "27 polegadas")),
+            
+            createProduct("TEC-001", "Teclado Keychron K2 V2", 
+                "Teclado mecânico, wireless, RGB, switches Gateron",
+                new BigDecimal("599.00"), "Acessórios", 25,
+                new String[]{"teclado", "keychron", "mecânico"},
+                createMetadata("layout", "75%", "switches", "Gateron Red")),
+            
+            createProduct("WEBCAM-001", "Webcam Logitech C920s", 
+                "Webcam Full HD 1080p, microfone estéreo, proteção de privacidade",
+                new BigDecimal("399.90"), "Acessórios", 30,
+                new String[]{"webcam", "logitech", "1080p"},
+                createMetadata("resolution", "1080p", "fov", "78°"))
         );
         
-        // Salva no banco de dados
-        List<Product> savedProducts = productRepository.saveAll(products);
-        
-        logger.info("{} produtos criados com sucesso!", savedProducts.size());
-        
-        // Log detalhado dos produtos criados
-        savedProducts.forEach(product -> {
-            logger.debug("   - ID: {}, SKU: {}, Nome: {}, Preço: R$ {}",
-                product.getId(),
-                product.getSku(),
-                product.getName(),
-                product.getPrice()
-            );
-        });
+        productRepository.saveAll(products);
+        log.debug("Saved {} products", products.size());
     }
     
+    private Product createProduct(String sku, String name, String description, 
+                                  BigDecimal price, String category, int stock,
+                                  String[] tags, Map<String, Object> metadata) {
+        Product product = new Product(sku, name, price);
+        product.setDescription(description);
+        product.setCategory(category);
+        product.setStockQuantity(stock);
+        product.setTags(tags);
+        product.setMetadata(metadata);
+        return product;
+    }
+    
+    private Map<String, Object> createMetadata(Object... pairs) {
+        Map<String, Object> metadata = new HashMap<>();
+        for (int i = 0; i < pairs.length; i += 2) {
+            metadata.put(pairs[i].toString(), pairs[i + 1]);
+        }
+        return metadata;
+    }
 }
