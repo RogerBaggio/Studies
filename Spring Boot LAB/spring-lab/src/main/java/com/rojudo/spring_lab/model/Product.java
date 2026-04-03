@@ -36,6 +36,10 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 /*
   ENTITY: Representa a tabela no banco de dados
   
@@ -59,7 +63,6 @@ import java.util.Objects;
     },
     indexes = {
         @Index(name = "idx_products_name", columnList = "name"),
-        @Index(name = "idx_products_category", columnList = "category"),
         @Index(name = "idx_products_price", columnList = "price"),
         @Index(name = "idx_products_active", columnList = "active")
     }
@@ -132,8 +135,15 @@ public class Product {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Column(length = 100)
-    private String category;
+    /**
+      Relacionamento Many-to-One com Category
+      @ManyToOne → Muitos produtos podem pertencer a uma categoria
+      @JoinColumn → Define a chave estrangeira (category_id)
+      fetch = FetchType.LAZY → Carregamento preguiçoso (performance)
+    */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Column(name = "stock_quantity")
     private Integer stockQuantity = 0;
@@ -230,7 +240,6 @@ public class Product {
     // ============================================
     // MÉTODOS DE NEGÓCIO (DOMAIN LOGIC)
     // ============================================
-
     /*
       Regra de estoque
      */
@@ -316,8 +325,8 @@ public class Product {
     public BigDecimal getPrice() { return price; }
     public void setPrice(BigDecimal price) { this.price = price; }
 
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public Category getCategory() { return category; }
+    public void setCategory(Category category) { this.category = category; }
 
     public Integer getStockQuantity() { return stockQuantity; }
     public void setStockQuantity(Integer stockQuantity) { this.stockQuantity = stockQuantity; }
@@ -332,10 +341,14 @@ public class Product {
     public void setTags(String[] tags) { this.tags = tags; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 
     public String getCreatedBy() { return createdBy; }
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
     public String getUpdatedBy() { return updatedBy; }
+    public void setUpdatedBy(String updatedBy) { this.updatedBy = updatedBy; }
 
     public Long getVersion() { return version; }
 

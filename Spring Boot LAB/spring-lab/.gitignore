@@ -31,3 +31,325 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# ============================================
+# SPRING BOOT - PROFESSIONAL .gitignore
+# Projeto: spring-lab
+# ============================================
+
+# ============================================
+# COMPILED FILES
+# ============================================
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+
+# ============================================
+# BUILD DIRECTORIES
+# ============================================
+/target/
+/build/
+/out/
+/bin/
+/.apt_generated/
+/.apt_generated_tests/
+
+# ============================================
+# MAVEN & GRADLE
+# ============================================
+# Maven
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+
+# ============================================
+# IDE FILES (VS Code, IntelliJ, Eclipse)
+# ============================================
+
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+.idea_modules/
+out/
+.idea_modules/
+
+# Eclipse
+.settings/
+.classpath
+.project
+.apt_generated/
+.apt_generated_tests/
+.factorypath
+.springBeans
+.sts4-cache
+
+# NetBeans
+/nbproject/
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ============================================
+# LOGS & DATABASES
+# ============================================
+*.log
+*.log.gz
+logs/
+log/
+.h2.db
+*.db
+*.h2.db
+*.lock.db
+*.trace.db
+*.script
+*.lobs
+
+# ============================================
+# SPRING BOOT SPECIFIC
+# ============================================
+/spring-boot-devtools.log
+/spring-boot-devtools.properties
+/.spring-boot-devtools.properties
+/spring-boot-devtools.pid
+/application-dev.properties.local
+/application-prod.properties.local
+
+# ============================================
+# DOCKER & CONTAINERS
+# ============================================
+docker-compose.override.yml
+docker-compose.override.yaml
+.dockerignore
+*.pid
+*.sock
+*.socket
+*.volume
+
+# ============================================
+# DATABASE & BACKUP FILES
+# ============================================
+*.sql
+*.dump
+*.backup
+backups/
+*.bak
+*.old
+*.orig
+*.rej
+
+# ============================================
+# SECURITY & SECRETS
+# ============================================
+*.p12
+*.jks
+*.key
+*.pem
+*.crt
+*.csr
+*.pfx
+*.keystore
+*.truststore
+.secret/
+secrets/
+application-secrets.yml
+application-secrets.yaml
+application-secrets.properties
+
+# ============================================
+# OS GENERATED FILES
+# ============================================
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.dll
+*.exe
+*.msi
+*.cache
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+*.swp
+*.swo
+*~
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Linux
+*~
+.directory
+*.pid
+*.socket
+*.so
+*.lock
+.*.swp
+.*.swo
+
+# ============================================
+# TEST COVERAGE REPORTS
+# ============================================
+/site/
+/test-output/
+/coverage/
+/target/surefire-reports/
+/target/failsafe-reports/
+/jacoco.exec
+/.jacoco/
+/cobertura.ser
+/htmlReport/
+/test-results/
+
+# ============================================
+# NODE & FRONTEND (se houver)
+# ============================================
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+dist/
+build/
+
+# ============================================
+# TEMPORARY & CACHE FILES
+# ============================================
+*.tmp
+*.temp
+*.cache
+.cache/
+.attach_pid*
+.history/
+*.hprof
+*.heapdump
+*.dump
+
+# ============================================
+# PROJECT SPECIFIC
+# ============================================
+
+# Spring Boot devtools
+.spring-boot-devtools/
+
+# Actuator (se tiver configurações locais)
+/actuator/
+/health/
+
+# Swagger UI local
+/swagger-ui/
+
+# Your project specific
+test-api.http
+*.http
+!test-api.http.example
+
+
+
+# Application config local (nunca commitar)
+application-local.yml
+application-local.yaml
+application-local.properties
+bootstrap-local.yml
+bootstrap-local.properties
+
+# ============================================
+# METADATA & REPORTING
+# ============================================
+.metadata/
+.manager/
+.loadpath
+.recommenders/
+.scannerdata/
+.checkstyle
+.pmd
+.prefs
+.externalToolBuilders/
+
+# ============================================
+# REMOTE & DEPLOYMENT
+# ============================================
+/.deploy/
+/.elasticbeanstalk/
+/.serverless/
+/.serverless_plugins/
+/.terraform/
+/terraform.tfstate
+/terraform.tfstate.backup
+/terraform.tfvars
+
+# ============================================
+# EXCEPTIONS (Arquivos que DEVEM ser versionados)
+# ============================================
+# Docker
+!docker-compose.yml
+!docker-compose.yaml
+!Dockerfile
+
+# Application config templates
+!application.yml
+!application-dev.yml
+!application-prod.yml
+!application-test.yml
+
+# Documentation
+!README.md
+!LICENSE
+!CONTRIBUTING.md
+
+# Examples
+!*.example
+!*.sample

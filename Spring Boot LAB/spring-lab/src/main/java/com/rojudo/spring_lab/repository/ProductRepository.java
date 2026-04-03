@@ -1,6 +1,7 @@
 package com.rojudo.spring_lab.repository;
 
 import com.rojudo.spring_lab.model.Product;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,10 +13,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.QueryHint;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import com.rojudo.spring_lab.model.Category;
 
 /*
   REPOSITORY: Camada de acesso a dados
@@ -108,7 +112,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
         ORDER BY p.createdAt DESC
         """)
     Page<Product> findWithFilters(
-        @Param("category") String category,
+        @Param("category") Category category,
         @Param("minPrice") BigDecimal minPrice,
         @Param("maxPrice") BigDecimal maxPrice,
         @Param("inStock") Boolean inStock,
@@ -133,7 +137,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     @Transactional  // Garante atomicidade da operação
     @Query("UPDATE Product p SET p.price = p.price * :multiplier WHERE p.category = :category")
     int bulkUpdatePriceByCategory(
-        @Param("category") String category,
+        @Param("category") Category category,
         @Param("multiplier") BigDecimal multiplier
     );
     
@@ -242,7 +246,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
       Busca produtos ativos por categoria
       Múltiplas condições: active = true AND category = ?
      */
-    List<Product> findByActiveTrueAndCategory(String category);
+    List<Product> findByActiveTrueAndCategory(Category category);
     
     /**
       Busca produtos com preço entre valores (versão simples)
@@ -267,5 +271,5 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
         WHERE p.category = :category AND p.active = true
         ORDER BY p.price DESC
         """)
-    List<Object[]> findProductSummariesByCategory(@Param("category") String category);
+    List<Object[]> findProductSummariesByCategory(@Param("category") Category category);
 }

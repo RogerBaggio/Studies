@@ -1,142 +1,425 @@
-### ============================================
-### SPRING LAB - API TEST SUITE
-### ============================================
+###############################################################################
+# SPRING LAB - PROFESSIONAL API TEST SUITE
+# 
+# Esta suite de testes cobre todos os endpoints da API:
+# - Health Check & Monitoring
+# - Authentication (Login, Register, Refresh, Logout)
+# - Products CRUD (Create, Read, Update, Delete)
+# - Security Tests (Unauthorized access, Invalid tokens)
+# - Validation & Error Handling
+#
+# Como usar:
+# 1. Execute a aplicação: ./mvnw spring-boot:run -Dspring.profiles.active=dev
+# 2. Instale a extensão "REST Client" no VS Code
+# 3. Clique em "Send Request" acima de cada requisição
+# 4. Ou use o atalho: Ctrl+Alt+R (Windows/Linux) / Cmd+Alt+R (Mac)
+#
+# Observação: Variáveis como {{authToken}} são automaticamente capturadas
+# das respostas das requisições anteriores.
+###############################################################################
 
 @baseUrl = http://localhost:8080/api/v1
 @contentType = application/json
 
-### 0. Test ENDPOINT
-GET http://localhost:8080/ping
+# =============================================================================
+# 1. MONITORING & HEALTH CHECKS
+# =============================================================================
+# Endpoints para monitoramento da aplicação (não requerem autenticação)
 
-### ============================================
-### USER API TEST SUITE
-### ============================================
+### 1.1 Actuator Health Check - Verifica se a aplicação está saudável
+GET http://localhost:8080/actuator/health
 
-### 1. Health Check - Hello World
-GET {{baseUrl}}/users/hello?name=SpringHero
+### 1.2 Actuator Info - Informações da aplicação
+GET http://localhost:8080/actuator/info
 
-### 2. Listar todos usuários (inicialmente vazio)
-GET {{baseUrl}}/users
+### 1.3 Actuator Metrics - Métricas da aplicação
+GET http://localhost:8080/actuator/metrics
 
-### 3. Criar primeiro usuário
-POST {{baseUrl}}/users
-Content-Type: application/json
+### 1.4 Swagger UI - Documentação interativa da API (abrir no navegador)
+# GET http://localhost:8080/swagger-ui.html
 
-{
-    "name": "João Silva",
-    "email": "joao.silva@email.com"
-}
+### 1.5 OpenAPI Spec - Especificação OpenAPI (JSON)
+# GET http://localhost:8080/v3/api-docs
 
-### 4. Criar segundo usuário
-POST {{baseUrl}}/users
-Content-Type: application/json
+# =============================================================================
+# 2. AUTHENTICATION (Public Endpoints)
+# =============================================================================
+# Endpoints de autenticação - NÃO requerem token
 
-{
-    "name": "Maria Santos",
-    "email": "maria.santos@email.com"
-}
-
-### 5. Criar terceiro usuário
-POST {{baseUrl}}/users
-Content-Type: application/json
+### 2.1 Register - Criar nova conta de usuário
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
 
 {
-    "name": "Pedro Oliveira",
-    "email": "pedro.oliveira@email.com"
+    "fullName": "Roger Baggio",
+    "email": "roger@email.com",
+    "password": "Senha123",
+    "phone": "11999999999"
 }
 
-### 6. Listar todos usuários (agora com dados)
-GET {{baseUrl}}/users
-
-### 7. Teste de erro - Tentar criar usuário sem email (vai falhar)
-POST {{baseUrl}}/users
-Content-Type: application/json
+### 2.2 Register - Usuário ADMIN (para testes administrativos)
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
 
 {
-    "name": "Usuário Inválido"
+    "fullName": "Admin User",
+    "email": "admin@test.com",
+    "password": "Admin123!",
+    "phone": "11988888888"
 }
 
-### 8. Teste de erro - Email inválido
-POST {{baseUrl}}/users
-Content-Type: application/json
+### 2.3 Login - Autenticar usuário (captura token automaticamente)
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
 
 {
-    "name": "Teste",
-    "email": "email-invalido"
+    "email": "roger@email.com",
+    "password": "Senha123"
 }
 
-### ============================================
-### PRODUCT API TEST SUITE
-### ============================================
+### 2.4 Login - Usuário ADMIN (credenciais do DataInitializer)
+# @name loginAdmin
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
 
-### 1. CREATE - Criar novo produto
+{
+    "email": "admin@springlab.com",
+    "password": "Admin123!"
+}
+
+### 2.5 Login - Usuário MANAGER
+# @name loginManager
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+    "email": "gerente@springlab.com",
+    "password": "Manager123!"
+}
+
+### 2.6 Login - Usuário comum
+# @name loginUser
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+    "email": "usuario@springlab.com",
+    "password": "User123!"
+}
+
+### 2.7 Refresh Token - Renovar token JWT (usar token do login)
+POST {{baseUrl}}/auth/refresh
+Authorization: Bearer {{login.response.body.accessToken}}
+
+# =============================================================================
+# 3. PROTECTED ENDPOINTS (Require Authentication)
+# =============================================================================
+# Todos os endpoints abaixo REQUEREM token JWT no header Authorization
+
+# Extrair token do último login (ajuste conforme necessário)
+@authToken = {{loginAdmin.response.body.accessToken}}
+
+### 3.1 Acessar endpoint protegido com token válido
+GET {{baseUrl}}/products
+Authorization: Bearer {{authToken}}
+
+### 3.2 Acessar endpoint protegido SEM token (deve retornar 401)
+GET {{baseUrl}}/products
+
+### 3.3 Acessar endpoint protegido com token INVÁLIDO (deve retornar 401)
+GET {{baseUrl}}/products
+Authorization: Bearer token_falso_123456
+
+### 3.4 Logout - Invalida token no cliente (stateless, apenas remove localmente)
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{authToken}}
+
+# =============================================================================
+# 4. PRODUCT CRUD OPERATIONS
+# =============================================================================
+# Requerem token JWT e permissões específicas
+
+### 4.1 CREATE - Criar novo produto (requer PRODUCT_CREATE - ADMIN/MANAGER)
 POST {{baseUrl}}/products
+Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
 
 {
     "sku": "TEST-001",
-    "name": "Produto Teste",
-    "description": "Descrição do produto teste",
-    "price": 99.90,
-    "category": "Testes",
-    "stockQuantity": 100
+    "name": "Notebook Gamer XYZ",
+    "description": "Notebook com RTX 4060, 16GB RAM, 1TB SSD",
+    "price": 5999.90,
+    "category": "Eletrônicos",
+    "stockQuantity": 15
 }
 
-### 2. READ ALL - Listar todos produtos (paginado)
+### 4.2 CREATE - Produto com categoria existente
+POST {{baseUrl}}/products
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+    "sku": "MOUSE-PRO-001",
+    "name": "Mouse Gamer Pro",
+    "description": "Mouse com sensor óptico de 26000 DPI",
+    "price": 299.90,
+    "category": "Periféricos",
+    "stockQuantity": 50
+}
+
+### 4.3 READ ALL - Listar produtos (paginado) - requer PRODUCT_READ
 GET {{baseUrl}}/products?page=0&size=10
+Authorization: Bearer {{authToken}}
 
-### 3. READ ACTIVE - Listar produtos ativos
-GET {{baseUrl}}/products/active
+### 4.4 READ ACTIVE - Listar apenas produtos ativos
+GET {{baseUrl}}/products/active?page=0&size=10
+Authorization: Bearer {{authToken}}
 
-### 4. READ BY ID - Buscar produto específico
+### 4.5 READ BY ID - Buscar produto específico
 GET {{baseUrl}}/products/1
+Authorization: Bearer {{authToken}}
 
-### 5. READ BY SKU - Buscar por SKU
+### 4.6 READ BY SKU - Buscar produto pelo código SKU
 GET {{baseUrl}}/products/sku/TEST-001
+Authorization: Bearer {{authToken}}
 
-### 6. SEARCH - Buscar por nome
-GET {{baseUrl}}/products/search?name=teste
+### 4.7 SEARCH - Buscar produtos por nome (case insensitive)
+GET {{baseUrl}}/products/search?name=notebook
+Authorization: Bearer {{authToken}}
 
-### 7. PRICE RANGE - Buscar por faixa de preço
-GET {{baseUrl}}/products/price-range?minPrice=100&maxPrice=500
+### 4.8 PRICE RANGE - Buscar produtos por faixa de preço
+GET {{baseUrl}}/products/price-range?minPrice=500&maxPrice=5000
+Authorization: Bearer {{authToken}}
 
-### 8. UPDATE - Atualizar produto
+### 4.9 UPDATE - Atualizar produto completo (requer PRODUCT_UPDATE)
 PUT {{baseUrl}}/products/1
+Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
 
 {
     "sku": "TEST-001-UPDATED",
-    "name": "Produto Teste Atualizado",
-    "description": "Descrição atualizada",
-    "price": 149.90,
-    "category": "Testes Especiais",
-    "stockQuantity": 150
+    "name": "Notebook Gamer XYZ Pro",
+    "description": "Notebook com RTX 4070, 32GB RAM, 2TB SSD",
+    "price": 7999.90,
+    "category": "Computadores",
+    "stockQuantity": 10
 }
 
-### 9. UPDATE STOCK - Atualizar estoque (PATCH)
-PATCH {{baseUrl}}/products/1/stock?quantity=50
+### 4.10 UPDATE STOCK - Atualizar estoque (operação específica)
+PATCH {{baseUrl}}/products/1/stock?quantity=-5
+Authorization: Bearer {{authToken}}
 
-### 10. TOGGLE ACTIVE - Ativar/Desativar produto
+### 4.11 TOGGLE ACTIVE - Ativar/Desativar produto (soft delete)
 PATCH {{baseUrl}}/products/1/toggle-active
+Authorization: Bearer {{authToken}}
 
-### 11. BULK UPDATE - Atualização em lote
+### 4.12 BULK UPDATE - Atualização em lote de preços por categoria
 PATCH {{baseUrl}}/products/bulk/price-update?category=Eletrônicos&percentage=10
+Authorization: Bearer {{authToken}}
 
-### 12. DELETE - Soft delete (desativar)
+### 4.13 DELETE - Soft delete (apenas desativa o produto)
 DELETE {{baseUrl}}/products/2
+Authorization: Bearer {{authToken}}
 
-### 13. VALIDATION ERROR - Teste de validação
+### 4.14 HARD DELETE - Remoção permanente (⚠️ apenas ADMIN, cuidado!)
+DELETE {{baseUrl}}/products/1/hard
+Authorization: Bearer {{authToken}}
+
+# =============================================================================
+# 5. VALIDATION & ERROR HANDLING TESTS
+# =============================================================================
+# Testes de validação de entrada e tratamento de erros
+
+### 5.1 VALIDATION ERROR - SKU vazio (deve retornar 400)
 POST {{baseUrl}}/products
+Authorization: Bearer {{authToken}}
 Content-Type: {{contentType}}
 
 {
     "sku": "",
-    "name": "",
-    "price": -10
+    "name": "Produto Inválido",
+    "price": 99.90,
+    "category": "Testes"
 }
 
-### 14. NOT FOUND - Teste de recurso inexistente
-GET {{baseUrl}}/products/999
+### 5.2 VALIDATION ERROR - Nome vazio (deve retornar 400)
+POST {{baseUrl}}/products
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
 
-### 15. HARD DELETE - Remoção permanente (cuidado!)
-DELETE {{baseUrl}}/products/1/hard
+{
+    "sku": "TEST-INVALID",
+    "name": "",
+    "price": 99.90,
+    "category": "Testes"
+}
+
+### 5.3 VALIDATION ERROR - Preço negativo (deve retornar 400)
+POST {{baseUrl}}/products
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+    "sku": "TEST-INVALID-2",
+    "name": "Produto Inválido",
+    "price": -10.00,
+    "category": "Testes"
+}
+
+### 5.4 NOT FOUND - Produto inexistente (deve retornar 404)
+GET {{baseUrl}}/products/99999
+Authorization: Bearer {{authToken}}
+
+### 5.5 CONFLICT - SKU duplicado (deve retornar 409)
+POST {{baseUrl}}/products
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+    "sku": "TEST-001",
+    "name": "Produto Duplicado",
+    "price": 99.90,
+    "category": "Testes"
+}
+
+### 5.6 UNAUTHORIZED - Acesso sem token (deve retornar 401)
+GET {{baseUrl}}/products
+
+# =============================================================================
+# 6. AUTHORIZATION TESTS (Role-Based Access Control)
+# =============================================================================
+# Testes de diferentes níveis de acesso baseados em roles
+
+### 6.1 Login como ADMIN (acesso total)
+# @name loginAdminTest
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+    "email": "admin@springlab.com",
+    "password": "Admin123!"
+}
+
+### 6.2 Login como MANAGER (acesso administrativo limitado)
+# @name loginManagerTest
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+    "email": "gerente@springlab.com",
+    "password": "Manager123!"
+}
+
+### 6.3 Login como USER (acesso básico)
+# @name loginUserTest
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+    "email": "usuario@springlab.com",
+    "password": "User123!"
+}
+
+### 6.3.1 Login como novo usuario (acesso básico)
+# @name loginUserTest
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+    "email": "roger@email.com",
+    "password": "Senha123"
+}
+
+### 6.4 ADMIN tentando criar produto (✅ deve funcionar)
+POST {{baseUrl}}/products
+Authorization: Bearer {{loginAdminTest.response.body.accessToken}}
+Content-Type: {{contentType}}
+
+{
+    "sku": "ADMIN-TEST",
+    "name": "Eletronico do ADMIN",
+    "description": "Teste de criação com ADMIN",
+    "price": 999.00,
+    "category": "Eletrônicos", 
+    "stockQuantity": 25
+}
+
+### 6.5 MANAGER tentando criar produto (✅ deve funcionar)
+POST {{baseUrl}}/products
+Authorization: Bearer {{loginManagerTest.response.body.accessToken}}
+Content-Type: {{contentType}}
+
+{
+    "sku": "MANAGER-TEST",
+    "name": "Acessório do MANAGER",
+    "description": "Teste de criação com MANAGER",
+    "price": 250.00,
+    "category": "Acessórios",
+    "stockQuantity": 15
+}
+
+### 6.6 USER tentando criar produto (❌ deve retornar 403 Forbidden)
+POST {{baseUrl}}/products
+Authorization: Bearer {{loginUserTest.response.body.accessToken}}
+Content-Type: {{contentType}}
+
+{
+    "sku": "USER-TEST",
+    "name": "Periférico do USER",
+    "description": "Teste de criação com USER",
+    "price": 100.00,
+    "category": "Periféricos",
+    "stockQuantity": 5
+}
+
+### 6.7 USER tentando listar produtos (✅ deve funcionar - tem permissão PRODUCT_READ)
+GET {{baseUrl}}/products
+Authorization: Bearer {{loginUserTest.response.body.accessToken}}
+
+# =============================================================================
+# 7. CHANGE PASSWORD
+# =============================================================================
+
+### 7.1 Alterar senha do usuário autenticado
+POST {{baseUrl}}/auth/change-password
+Authorization: Bearer {{authToken}}
+Content-Type: application/x-www-form-urlencoded
+
+oldPassword=Senha123&newPassword=NovaSenha123456
+
+### 7.2 Login com nova senha (após alteração)
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+    "email": "roger@email.com",
+    "password": "NovaSenha123456"
+}
+
+# =============================================================================
+# 8. CREDENCIAIS PADRÃO DO SISTEMA (DataInitializer)
+# =============================================================================
+# Estes usuários são criados automaticamente pelo DataInitializer no perfil "dev"
+
+### ADMIN: admin@springlab.com / Admin123!
+### MANAGER: gerente@springlab.com / Manager123!
+### USER: usuario@springlab.com / User123!
+### Usuários adicionais: joao.silva@email.com / Senha123!
+### Usuários adicionais: maria.santos@email.com / Senha123!
+
+# =============================================================================
+# 9. RESPOSTAS ESPERADAS - CÓDIGOS HTTP
+# =============================================================================
+#
+# 200 OK          → Requisição bem-sucedida (GET, PUT, PATCH)
+# 201 Created     → Recurso criado com sucesso (POST)
+# 204 No Content  → Requisição bem-sucedida sem conteúdo (DELETE, PATCH)
+# 400 Bad Request → Dados inválidos ou validação falhou
+# 401 Unauthorized → Token ausente ou inválido
+# 403 Forbidden   → Token válido, mas sem permissão para o recurso
+# 404 Not Found   → Recurso não encontrado
+# 409 Conflict    → Conflito (ex: SKU duplicado)
+# 500 Server Error → Erro interno (deve ser tratado e não ocorrer em produção)
+#
+# =============================================================================

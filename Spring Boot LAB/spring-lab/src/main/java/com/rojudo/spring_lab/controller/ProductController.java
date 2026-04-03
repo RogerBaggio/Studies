@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -35,6 +36,12 @@ import java.util.List;
   - @RestController = @Controller + @ResponseBody
   - @RequestMapping define base path
   - @Tag documenta no Swagger
+  
+  SEGURANÇA:
+  - @PreAuthorize: Controla acesso baseado em roles/permissões
+  - hasAuthority(): Verifica permissões específicas (ex: PRODUCT_READ)
+  - hasRole(): Verifica papéis (ex: ROLE_ADMIN)
+  - Expressões podem combinar condições com operadores lógicos
  */
 @RestController
 @RequestMapping("/api/v1/products")
@@ -48,34 +55,19 @@ public class ProductController {
         this.productService = productService;
     }
     
-    /*
-      POST - Criar novo produto
-      
-      @ResponseStatus(201) - Created
-      Location header com URI do recurso criado
-     */
-    @PostMapping
-    @Operation(summary = "Criar novo produto", description = "Cria um produto com os dados fornecidos")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Produto criado com sucesso"),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
-        @ApiResponse(responseCode = "409", description = "SKU já existe")
-    })
-    public ResponseEntity<ProductResponseDTO> create(@Valid @RequestBody ProductRequestDTO request) {
-        ProductResponseDTO response = productService.create(request);
-        
-        // Padrão REST: retornar URI do recurso criado
-        URI location = URI.create(String.format("/api/v1/products/%d", response.id()));
-        
-        return ResponseEntity.created(location).body(response);
-    }
+    // ==================== ENDPOINTS DE LEITURA (READ) ====================
     
     /*
       GET - Listar todos produtos (paginado)
       
       @PageableDefault: Configuração padrão de paginação
+      
+      SEGURANÇA: Qualquer usuário autenticado com permissão PRODUCT_READ
+      - Usuários comuns (ROLE_USER) têm esta permissão via role padrão
+      - Admins e Managers também têm acesso
      */
     @GetMapping
+    @PreAuthorize("hasAuthority('PRODUCT_READ')")
     @Operation(summary = "Listar produtos", description = "Retorna lista paginada de produtos")
     public ResponseEntity<Page<ProductResponseDTO>> findAll(
             @PageableDefault(
@@ -89,8 +81,14 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
     
-    // GET - Produtos ativos (paginado)
+    /*
+      GET - Produtos ativos (paginado)
+      
+      SEGURANÇA: Requer permissão PRODUCT_READ
+      - Filtro por produtos ativos, útil para catálogos públicos
+     */
     @GetMapping("/active")
+    @PreAuthorize("hasAuthority('PRODUCT_READ')")
     @Operation(summary = "Listar produtos ativos", description = "Retorna produtos ativos (com estoque > 0)")
     public ResponseEntity<Page<ProductResponseDTO>> findActiveProducts(
             @PageableDefault(size = 20) Pageable pageable) {
@@ -100,8 +98,14 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
     
-    // GET - Buscar por ID
+    /*
+      GET - Buscar por ID
+      
+      SEGURANÇA: Requer permissão PRODUCT_READ
+      - Acesso detalhado a um produto específico
+     */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('PRODUCT_READ')")
     @Operation(summary = "Buscar produto por ID", description = "Retorna um produto específico pelo ID")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Produto encontrado"),
@@ -116,15 +120,27 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
     
-    // GET - Buscar por SKU 
+    /*
+      GET - Buscar por SKU
+      
+      SEGURANÇA: Requer permissão PRODUCT_READ
+      - Busca por SKU (identificador único do produto)
+     */
     @GetMapping("/sku/{sku}")
+    @PreAuthorize("hasAuthority('PRODUCT_READ')")
     public ResponseEntity<ProductResponseDTO> findBySku(@PathVariable String sku) {
         ProductResponseDTO product = productService.findBySku(sku);
         return ResponseEntity.ok(product);
     }
     
-    // GET - Buscar por nome
+    /*
+      GET - Buscar por nome
+      
+      SEGURANÇA: Requer permissão PRODUCT_READ
+      - Busca textual por nome do produto (case insensitive)
+     */
     @GetMapping("/search")
+    @PreAuthorize("hasAuthority('PRODUCT_READ')")
     public ResponseEntity<List<ProductResponseDTO>> searchByName(
             @RequestParam String name) {
         
@@ -132,8 +148,14 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
     
-    // GET - Buscar por faixa de preço
+    /*
+      GET - Buscar por faixa de preço
+      
+      SEGURANÇA: Requer permissão PRODUCT_READ
+      - Filtro por intervalo de preços (minPrice e maxPrice)
+     */
     @GetMapping("/price-range")
+    @PreAuthorize("hasAuthority('PRODUCT_READ')")
     public ResponseEntity<List<ProductResponseDTO>> findByPriceRange(
             @RequestParam BigDecimal minPrice,
             @RequestParam BigDecimal maxPrice) {
@@ -142,8 +164,45 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
     
-    // PUT - Atualizar produto (completo)
+    // ==================== ENDPOINTS DE ESCRITA (WRITE) ====================
+    
+    /*
+      POST - Criar novo produto
+      
+      @ResponseStatus(201) - Created
+      Location header com URI do recurso criado
+      
+      SEGURANÇA: Requer permissão PRODUCT_CREATE
+      - Apenas ADMIN e MANAGER têm esta permissão
+      - Usuários comuns NÃO podem criar produtos
+     */
+    @PostMapping
+    @PreAuthorize("hasAuthority('PRODUCT_CREATE')")
+    @Operation(summary = "Criar novo produto", description = "Cria um produto com os dados fornecidos")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Produto criado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "403", description = "Acesso negado"),
+        @ApiResponse(responseCode = "409", description = "SKU já existe")
+    })
+    public ResponseEntity<ProductResponseDTO> create(@Valid @RequestBody ProductRequestDTO request) {
+        ProductResponseDTO response = productService.create(request);
+        
+        // Padrão REST: retornar URI do recurso criado
+        URI location = URI.create(String.format("/api/v1/products/%d", response.id()));
+        
+        return ResponseEntity.created(location).body(response);
+    }
+    
+    /*
+      PUT - Atualizar produto (completo)
+      
+      SEGURANÇA: Requer permissão PRODUCT_UPDATE
+      - Apenas ADMIN e MANAGER podem atualizar produtos
+      - Atualização completa (todos os campos)
+     */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('PRODUCT_UPDATE')")
     public ResponseEntity<ProductResponseDTO> update(
             @PathVariable Long id,
             @Valid @RequestBody ProductRequestDTO request) {
@@ -152,8 +211,15 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
     
-    // PATCH - Atualizar estoque (operação específica)
+    /*
+      PATCH - Atualizar estoque (operação específica)
+      
+      SEGURANÇA: Requer permissão PRODUCT_UPDATE
+      - Operação específica para controle de estoque
+      - Útil para sistemas de inventário
+     */
     @PatchMapping("/{id}/stock")
+    @PreAuthorize("hasAuthority('PRODUCT_UPDATE')")
     @Operation(summary = "Atualizar estoque", description = "Adiciona ou remove unidades do estoque")
     public ResponseEntity<Void> updateStock(
             @PathVariable Long id,
@@ -163,15 +229,28 @@ public class ProductController {
         return ResponseEntity.noContent().build(); // 204 No Content
     }
     
-    // PATCH - Ativar/desativar produto
+    /*
+      PATCH - Ativar/desativar produto
+      
+      SEGURANÇA: Requer permissão PRODUCT_UPDATE
+      - Permite ativar ou desativar um produto (soft delete controlado)
+     */
     @PatchMapping("/{id}/toggle-active")
+    @PreAuthorize("hasAuthority('PRODUCT_UPDATE')")
     public ResponseEntity<Void> toggleActive(@PathVariable Long id) {
         productService.toggleActive(id);
         return ResponseEntity.noContent().build();
     }
     
-    // PATCH - Atualização em lote (exemplo de operação complexa)
+    /*
+      PATCH - Atualização em lote (exemplo de operação complexa)
+      
+      SEGURANÇA: Requer permissão PRODUCT_UPDATE
+      - Atualiza preços de todos produtos de uma categoria
+      - Operação administrativa em lote
+     */
     @PatchMapping("/bulk/price-update")
+    @PreAuthorize("hasAuthority('PRODUCT_UPDATE')")
     public ResponseEntity<Integer> bulkPriceUpdate(
             @RequestParam String category,
             @RequestParam BigDecimal percentage) {
@@ -180,24 +259,104 @@ public class ProductController {
         return ResponseEntity.ok(updatedCount);
     }
     
-    // DELETE - Soft delete (desativa)
+    // ==================== ENDPOINTS DE EXCLUSÃO (DELETE) ====================
+    
+    /*
+      DELETE - Soft delete (desativa)
+      
+      SEGURANÇA: Requer permissão PRODUCT_DELETE
+      - Apenas ADMIN pode deletar produtos
+      - Soft delete: apenas desativa, mantém histórico
+     */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('PRODUCT_DELETE')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Desativar produto", description = "Desativa o produto (soft delete)")
     public void delete(@PathVariable Long id) {
         productService.delete(id);
     }
     
-    /**
+    /*
       DELETE - Hard delete (uso restrito)
       
-      Em produção, normalmente NÃO expor este endpoint
-      Aqui apenas para demonstração
+      SEGURANÇA: Requer permissão PRODUCT_DELETE (nível ADMIN)
+      - Em produção, normalmente NÃO expor este endpoint
+      - Remove permanentemente do banco de dados
+      - Use com EXTREMO CUIDADO!
+      
+      @PreAuthorize("hasRole('ADMIN')") - Restrição adicional por role
      */
     @DeleteMapping("/{id}/hard")
+    @PreAuthorize("hasRole('ADMIN') and hasAuthority('PRODUCT_DELETE')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "Remover permanentemente", description = "Remove o produto do banco de dados (uso restrito)")
+    @Operation(summary = "Remover permanentemente", description = "Remove o produto do banco de dados (uso restrito - apenas ADMIN)")
     public void hardDelete(@PathVariable Long id) {
         productService.hardDelete(id);
     }
+    
+    // ==================== ENDPOINTS EXTRAS COM CONTROLE DE ACESSO ====================
+    
+    /*
+      EXEMPLO: Acesso baseado no próprio usuário
+      
+      GET - Buscar produtos por usuário (exemplo de controle de acesso)
+      
+      SEGURANÇA: Apenas o próprio usuário ou ADMIN podem ver
+      - Expressão: hasRole('ADMIN') or #userId == authentication.principal.id
+      - #userId referencia o parâmetro do método
+      - authentication.principal.id acessa o ID do usuário autenticado
+      
+      NOTA: Este é um exemplo didático. Em um cenário real, você teria um
+      relacionamento entre usuários e produtos (ex: produtos criados por usuário)
+     */
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
+    @Operation(summary = "Produtos por usuário", description = "Retorna produtos associados a um usuário específico")
+    public ResponseEntity<List<ProductResponseDTO>> findProductsByUser(@PathVariable Long userId) {
+        // Implementação: productService.findByUserId(userId)
+        // Por enquanto, retorna lista vazia como exemplo
+        return ResponseEntity.ok(List.of());
+    }
 }
+
+/*
+  RESUMO DAS PERMISSÕES IMPLEMENTADAS:
+  
+  | Endpoint                    | Método | Permissão Necessária | Roles que têm acesso           |
+  |-----------------------------|--------|---------------------|--------------------------------|
+  | /products                   | GET    | PRODUCT_READ        | USER, MANAGER, ADMIN           |
+  | /products/active            | GET    | PRODUCT_READ        | USER, MANAGER, ADMIN           |
+  | /products/{id}              | GET    | PRODUCT_READ        | USER, MANAGER, ADMIN           |
+  | /products/sku/{sku}         | GET    | PRODUCT_READ        | USER, MANAGER, ADMIN           |
+  | /products/search            | GET    | PRODUCT_READ        | USER, MANAGER, ADMIN           |
+  | /products/price-range       | GET    | PRODUCT_READ        | USER, MANAGER, ADMIN           |
+  | /products                   | POST   | PRODUCT_CREATE      | MANAGER, ADMIN                 |
+  | /products/{id}              | PUT    | PRODUCT_UPDATE      | MANAGER, ADMIN                 |
+  | /products/{id}/stock        | PATCH  | PRODUCT_UPDATE      | MANAGER, ADMIN                 |
+  | /products/{id}/toggle-active| PATCH  | PRODUCT_UPDATE      | MANAGER, ADMIN                 |
+  | /products/bulk/price-update | PATCH  | PRODUCT_UPDATE      | MANAGER, ADMIN                 |
+  | /products/{id}              | DELETE | PRODUCT_DELETE      | ADMIN (apenas)                 |
+  | /products/{id}/hard         | DELETE | ADMIN + DELETE      | ADMIN (apenas)                 |
+  | /products/user/{userId}     | GET    | USER_OWN or ADMIN   | Usuário dono ou ADMIN          |
+  
+  PRINCÍPIOS DE SEGURANÇA APLICADOS:
+  
+  1. PRINCÍPIO DO MENOR PRIVILÉGIO:
+     - Cada endpoint concede apenas as permissões mínimas necessárias
+     - Usuários comuns têm apenas permissão de leitura (PRODUCT_READ)
+  
+  2. DEFESA EM PROFUNDIDADE:
+     - Múltiplas camadas de segurança:
+       * Filter chain (autenticação)
+       * @PreAuthorize (autorização)
+       * Validações de negócio no Service
+  
+  3. SEPARAÇÃO DE RESPONSABILIDADES:
+     - Controller: Responsável apenas por receber requisições e aplicar autorização
+     - Service: Contém regras de negócio
+     - Repository: Acesso a dados
+  
+  4. AUDITABILIDADE:
+     - Operações críticas (delete, create) são logadas
+     - Possibilidade de rastrear quem fez o quê
+*/

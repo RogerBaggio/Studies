@@ -8,6 +8,9 @@ spring:
   application:
     name: spring-lab
 
+  jpa:
+    open-in-view: false
+
   # Jackson Configuration
   jackson:
     default-property-inclusion: non_null
@@ -65,10 +68,19 @@ management:
     web:
       exposure:
         include: health,info,metrics
+      base-path: /actuator
   endpoint:
     health:
       show-details: always
-
+      show-components: always
+    info:
+      enabled: true
+    metrics:
+      enabled: true
+  info:
+    env:
+      enabled: true
+      
 # ============================================
 # DEVELOPMENT PROFILE
 # ============================================
@@ -77,7 +89,18 @@ spring:
   config:
     activate:
       on-profile: dev
-
+  
+  devtools:
+    restart:
+      enabled: true
+      additional-paths:
+        - src/main/resources
+      exclude:
+        - static/**
+        - public/**
+    livereload:
+      enabled: true
+  
   datasource:
     url: jdbc:postgresql://localhost:5432/springlab_db
     username: springlab_user
@@ -97,7 +120,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: create-drop
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -118,12 +141,12 @@ spring:
       roles: ADMIN,USER
 
   flyway:
-    enabled: false
+    enabled: true
     baseline-on-migrate: true
-    baseline-version: 1
+    baseline-version: 0
     locations: classpath:db/migration
     table: flyway_schema_history
-    validate-on-migrate: true
+    validate-on-migrate: false
 
 data:
   initializer:
@@ -133,9 +156,12 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-    org.hibernate.stat: DEBUG
     com.zaxxer.hikari: DEBUG
     org.springframework.jdbc: DEBUG
+
+    # Desabilita logs de estatísticas
+    org.hibernate.stat: DEBUG
+    org.hibernate.engine.internal.StatisticalLoggingSessionEventListener: OFF
 
 # ============================================
 # PRODUCTION PROFILE

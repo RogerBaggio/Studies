@@ -1,5 +1,7 @@
 package com.rojudo.spring_lab.service;
 
+import java.math.BigDecimal;
+
 import com.rojudo.spring_lab.dto.ProductMapper;
 import com.rojudo.spring_lab.dto.ProductRequestDTO;
 import com.rojudo.spring_lab.dto.ProductResponseDTO;
@@ -15,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.rojudo.spring_lab.model.Category;
+import com.rojudo.spring_lab.repository.CategoryRepository;
 
 /*
   SERVICE: Camada de negócio
@@ -37,7 +42,8 @@ public class ProductService {
     
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    
+    private final CategoryRepository categoryRepository;
+
     /*
       Injeção por construtor
       
@@ -47,9 +53,10 @@ public class ProductService {
       - Dependências explícitas
      */
     @Autowired
-    public ProductService(ProductRepository productRepository, ProductMapper productMapper) {
+    public ProductService(ProductRepository productRepository, ProductMapper productMapper, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
+        this.categoryRepository = categoryRepository;
     }
     
     /*
@@ -204,22 +211,32 @@ public class ProductService {
         productRepository.save(product);
     }
     
-    //BUSINESS OPERATION - Bulk price update
+    //BUSINESS OPERATION - Bulk price update - Atualiza o preço de todos os produtos de uma categoria em lote
     @Transactional
-    public int bulkPriceUpdate(String category, java.math.BigDecimal percentage) {
-        // Busca produtos da categoria
+    public int bulkPriceUpdate(String categoryName, BigDecimal percentage) {
+        // 1. Buscar a categoria pelo nome (converter String → Category)
+        Category category = categoryRepository.findByName(categoryName)
+            .orElseThrow(() -> new IllegalArgumentException(
+                "Categoria não encontrada: " + categoryName
+            ));
+    
+        // 2. Buscar produtos da categoria (agora com Category object)
         List<Product> products = productRepository.findByActiveTrueAndCategory(category);
         
-        // Aplica novo preço
+        if (products.isEmpty()) {
+            return 0;  // Nenhum produto encontrado
+        }
+    
+        // 3. Aplicar novo preço
         for (Product product : products) {
-            java.math.BigDecimal newPrice = product.getPrice()
-                .multiply(java.math.BigDecimal.ONE.add(percentage.divide(new java.math.BigDecimal(100))));
+            BigDecimal multiplier = BigDecimal.ONE.add(percentage.divide(new BigDecimal(100)));
+            BigDecimal newPrice = product.getPrice().multiply(multiplier);
             product.updatePrice(newPrice);
         }
-        
-        // Save all
+    
+        // 4. Salvar todos
         productRepository.saveAll(products);
-        
+    
         return products.size();
     }
     
