@@ -1,4 +1,4 @@
-package com.rojudo.spring_lab.security;
+package com.rojudo.spring_lab.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

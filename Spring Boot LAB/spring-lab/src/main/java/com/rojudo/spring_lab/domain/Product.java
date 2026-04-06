@@ -1,4 +1,4 @@
-package com.rojudo.spring_lab.model;
+package com.rojudo.spring_lab.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

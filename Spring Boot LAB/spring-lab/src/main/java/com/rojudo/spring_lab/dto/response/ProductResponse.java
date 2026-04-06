@@ -1,20 +1,11 @@
-package com.rojudo.spring_lab.dto;
+package com.rojudo.spring_lab.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/*
-  RESPONSE DTO: Dados de saída da API
-  
-  POR QUE RESPONSE DTO SEPARADO?
-  - API retorna apenas campos necessários
-  - Protege dados sensíveis
-  - Permite transformações (ex: formato de data)
-  - Versionamento independente
- */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record ProductResponseDTO(
+public record ProductResponse(
     Long id,
     String sku,
     String name,
@@ -31,15 +22,11 @@ public record ProductResponseDTO(
     String priceFormatted
     
 ) {
-    /*
-      Builder pattern manual 
-      
-      POR QUE BUILDER?
-      - Construtor com muitos parâmetros fica confuso
-      - Nome dos campos explícitos
-      - Imutabilidade mantida
-     */
-    public static class Builder {
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder { // Builder pattern manual: Construtor menos confuso, nome de campos explícitos, imutabilidade mantida
         private Long id;
         private String sku;
         private String name;
@@ -66,16 +53,12 @@ public record ProductResponseDTO(
         public Builder available(Boolean available) { this.available = available; return this; }
         public Builder priceFormatted(String priceFormatted) { this.priceFormatted = priceFormatted; return this; }
         
-        public ProductResponseDTO build() {
-            return new ProductResponseDTO(
+        public ProductResponse build() {
+            return new ProductResponse(
                 id, sku, name, description, price, category,
                 stockQuantity, active, createdAt, updatedAt,
                 available, priceFormatted
             );
         }
-    }
-    
-    public static Builder builder() {
-        return new Builder();
     }
 }

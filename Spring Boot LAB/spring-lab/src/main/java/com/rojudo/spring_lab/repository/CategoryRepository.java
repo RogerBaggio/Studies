@@ -1,6 +1,6 @@
 package com.rojudo.spring_lab.repository;
 
-import com.rojudo.spring_lab.model.Category;
+import com.rojudo.spring_lab.domain.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,14 +1,14 @@
 package com.rojudo.spring_lab.service;
 
-import com.rojudo.spring_lab.dto.auth.LoginRequestDTO;
-import com.rojudo.spring_lab.dto.auth.LoginResponseDTO;
-import com.rojudo.spring_lab.dto.auth.RegisterRequestDTO;
-import com.rojudo.spring_lab.dto.auth.UserInfoDTO;
-import com.rojudo.spring_lab.model.Role;
-import com.rojudo.spring_lab.model.User;
+import com.rojudo.spring_lab.dto.request.AuthLoginRequest;
+import com.rojudo.spring_lab.dto.request.AuthRegisterRequest;
+import com.rojudo.spring_lab.dto.response.AuthLoginResponse;
+import com.rojudo.spring_lab.dto.response.UserInfoResponse;
+import com.rojudo.spring_lab.domain.Role;
+import com.rojudo.spring_lab.domain.User;
 import com.rojudo.spring_lab.repository.RoleRepository;
 import com.rojudo.spring_lab.repository.UserRepository;
-import com.rojudo.spring_lab.security.JwtService;
+import com.rojudo.spring_lab.config.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class AuthService {
     /**
      * Login - Autentica usuário e gera token
      */
-    public LoginResponseDTO login(LoginRequestDTO request) {
+    public AuthLoginResponse login(AuthLoginRequest request) {
         log.info("Login attempt for user: {}", request.email());
         
         try {
@@ -100,7 +100,7 @@ public class AuthService {
     /**
      * Registro de novo usuário
      */
-    public LoginResponseDTO register(RegisterRequestDTO request) {
+    public AuthLoginResponse register(AuthRegisterRequest request) {
         log.info("Register attempt for user: {}", request.email());
         
         // Verifica se email já existe
@@ -145,7 +145,7 @@ public class AuthService {
     /**
      * Refresh token
      */
-    public LoginResponseDTO refreshToken(String token) {
+    public AuthLoginResponse refreshToken(String token) {
         // Remove prefixo "Bearer " se existir
         if (token.startsWith("Bearer ")) {
             token = token.substring(7);
@@ -192,10 +192,10 @@ public class AuthService {
     /**
      * Constrói resposta de login
      */
-    private LoginResponseDTO buildLoginResponse(String token, User user) {
-        return new LoginResponseDTO(
+    private AuthLoginResponse buildLoginResponse(String token, User user) {
+        return new AuthLoginResponse(
             token,
-            new UserInfoDTO(
+            new UserInfoResponse(
                 user.getId(),
                 user.getEmail(),
                 user.getFullName(),

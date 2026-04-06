@@ -1,8 +1,9 @@
 package com.rojudo.spring_lab.controller;
 
-import com.rojudo.spring_lab.dto.ProductRequestDTO;
-import com.rojudo.spring_lab.dto.ProductResponseDTO;
+import com.rojudo.spring_lab.dto.request.ProductRequest;
+import com.rojudo.spring_lab.dto.response.ProductResponse;
 import com.rojudo.spring_lab.service.ProductService;
+import com.rojudo.spring_lab.validation.ValidationGroups;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -17,6 +18,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -42,6 +44,11 @@ import java.util.List;
   - hasAuthority(): Verifica permissões específicas (ex: PRODUCT_READ)
   - hasRole(): Verifica papéis (ex: ROLE_ADMIN)
   - Expressões podem combinar condições com operadores lógicos
+  
+  VALIDAÇÃO POR GRUPOS:
+  - @Validated(OnCreate.class): Usado para CREATE - valida todos os campos obrigatórios
+  - @Validated(OnUpdate.class): Usado para UPDATE - SKU, nome e preço são opcionais
+  - @Valid: Usado para operações específicas como PATCH /stock
  */
 @RestController
 @RequestMapping("/api/v1/products")
@@ -69,14 +76,14 @@ public class ProductController {
     @GetMapping
     @PreAuthorize("hasAuthority('PRODUCT_READ')")
     @Operation(summary = "Listar produtos", description = "Retorna lista paginada de produtos")
-    public ResponseEntity<Page<ProductResponseDTO>> findAll(
+    public ResponseEntity<Page<ProductResponse>> findAll(
             @PageableDefault(
                 size = 20,
                 sort = "createdAt",
                 direction = Sort.Direction.DESC
             ) Pageable pageable) {
         
-        Page<ProductResponseDTO> products = productService.findAll(pageable);
+        Page<ProductResponse> products = productService.findAll(pageable);
         
         return ResponseEntity.ok(products);
     }
@@ -90,10 +97,10 @@ public class ProductController {
     @GetMapping("/active")
     @PreAuthorize("hasAuthority('PRODUCT_READ')")
     @Operation(summary = "Listar produtos ativos", description = "Retorna produtos ativos (com estoque > 0)")
-    public ResponseEntity<Page<ProductResponseDTO>> findActiveProducts(
+    public ResponseEntity<Page<ProductResponse>> findActiveProducts(
             @PageableDefault(size = 20) Pageable pageable) {
         
-        Page<ProductResponseDTO> products = productService.findActiveProducts(pageable);
+        Page<ProductResponse> products = productService.findActiveProducts(pageable);
         
         return ResponseEntity.ok(products);
     }
@@ -111,11 +118,11 @@ public class ProductController {
         @ApiResponse(responseCode = "200", description = "Produto encontrado"),
         @ApiResponse(responseCode = "404", description = "Produto não encontrado")
     })
-    public ResponseEntity<ProductResponseDTO> findById(
+    public ResponseEntity<ProductResponse> findById(
             @Parameter(description = "ID do produto", example = "1")
             @PathVariable Long id) {
         
-        ProductResponseDTO product = productService.findById(id);
+        ProductResponse product = productService.findById(id);
         
         return ResponseEntity.ok(product);
     }
@@ -128,8 +135,8 @@ public class ProductController {
      */
     @GetMapping("/sku/{sku}")
     @PreAuthorize("hasAuthority('PRODUCT_READ')")
-    public ResponseEntity<ProductResponseDTO> findBySku(@PathVariable String sku) {
-        ProductResponseDTO product = productService.findBySku(sku);
+    public ResponseEntity<ProductResponse> findBySku(@PathVariable String sku) {
+        ProductResponse product = productService.findBySku(sku);
         return ResponseEntity.ok(product);
     }
     
@@ -141,10 +148,10 @@ public class ProductController {
      */
     @GetMapping("/search")
     @PreAuthorize("hasAuthority('PRODUCT_READ')")
-    public ResponseEntity<List<ProductResponseDTO>> searchByName(
+    public ResponseEntity<List<ProductResponse>> searchByName(
             @RequestParam String name) {
         
-        List<ProductResponseDTO> products = productService.findByName(name);
+        List<ProductResponse> products = productService.findByName(name);
         return ResponseEntity.ok(products);
     }
     
@@ -156,11 +163,11 @@ public class ProductController {
      */
     @GetMapping("/price-range")
     @PreAuthorize("hasAuthority('PRODUCT_READ')")
-    public ResponseEntity<List<ProductResponseDTO>> findByPriceRange(
+    public ResponseEntity<List<ProductResponse>> findByPriceRange(
             @RequestParam BigDecimal minPrice,
             @RequestParam BigDecimal maxPrice) {
         
-        List<ProductResponseDTO> products = productService.findByPriceRange(minPrice, maxPrice);
+        List<ProductResponse> products = productService.findByPriceRange(minPrice, maxPrice);
         return ResponseEntity.ok(products);
     }
     
@@ -175,6 +182,11 @@ public class ProductController {
       SEGURANÇA: Requer permissão PRODUCT_CREATE
       - Apenas ADMIN e MANAGER têm esta permissão
       - Usuários comuns NÃO podem criar produtos
+      
+      VALIDAÇÃO: Usa grupo OnCreate
+      - SKU: obrigatório e único
+      - Nome: obrigatório
+      - Preço: obrigatório e > 0
      */
     @PostMapping
     @PreAuthorize("hasAuthority('PRODUCT_CREATE')")
@@ -185,8 +197,11 @@ public class ProductController {
         @ApiResponse(responseCode = "403", description = "Acesso negado"),
         @ApiResponse(responseCode = "409", description = "SKU já existe")
     })
-    public ResponseEntity<ProductResponseDTO> create(@Valid @RequestBody ProductRequestDTO request) {
-        ProductResponseDTO response = productService.create(request);
+    public ResponseEntity<ProductResponse> create(
+            @Validated(ValidationGroups.OnCreate.class) 
+            @RequestBody ProductRequest request) {
+        
+        ProductResponse response = productService.create(request);
         
         // Padrão REST: retornar URI do recurso criado
         URI location = URI.create(String.format("/api/v1/products/%d", response.id()));
@@ -200,14 +215,20 @@ public class ProductController {
       SEGURANÇA: Requer permissão PRODUCT_UPDATE
       - Apenas ADMIN e MANAGER podem atualizar produtos
       - Atualização completa (todos os campos)
+      
+      VALIDAÇÃO: Usa grupo OnUpdate
+      - SKU: opcional, mas se fornecido deve ser único (ignorando o próprio ID)
+      - Nome: opcional, mas se fornecido não pode ser vazio
+      - Preço: opcional, mas se fornecido deve ser > 0
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('PRODUCT_UPDATE')")
-    public ResponseEntity<ProductResponseDTO> update(
+    public ResponseEntity<ProductResponse> update(
             @PathVariable Long id,
-            @Valid @RequestBody ProductRequestDTO request) {
+            @Validated(ValidationGroups.OnUpdate.class) 
+            @RequestBody ProductRequest request) {
         
-        ProductResponseDTO response = productService.update(id, request);
+        ProductResponse response = productService.update(id, request);
         return ResponseEntity.ok(response);
     }
     
@@ -217,6 +238,8 @@ public class ProductController {
       SEGURANÇA: Requer permissão PRODUCT_UPDATE
       - Operação específica para controle de estoque
       - Útil para sistemas de inventário
+      
+      VALIDAÇÃO: Usa @Valid (validação padrão, sem grupos especiais)
      */
     @PatchMapping("/{id}/stock")
     @PreAuthorize("hasAuthority('PRODUCT_UPDATE')")
@@ -312,7 +335,7 @@ public class ProductController {
     @GetMapping("/user/{userId}")
     @PreAuthorize("hasRole('ADMIN') or #userId == authentication.principal.id")
     @Operation(summary = "Produtos por usuário", description = "Retorna produtos associados a um usuário específico")
-    public ResponseEntity<List<ProductResponseDTO>> findProductsByUser(@PathVariable Long userId) {
+    public ResponseEntity<List<ProductResponse>> findProductsByUser(@PathVariable Long userId) {
         // Implementação: productService.findByUserId(userId)
         // Por enquanto, retorna lista vazia como exemplo
         return ResponseEntity.ok(List.of());
@@ -359,4 +382,11 @@ public class ProductController {
   4. AUDITABILIDADE:
      - Operações críticas (delete, create) são logadas
      - Possibilidade de rastrear quem fez o quê
+  
+  VALIDAÇÃO POR GRUPOS:
+  
+  | Grupo | Uso | Campos validados |
+  |-------|-----|------------------|
+  | OnCreate | POST /products | SKU (obrigatório, único), Nome (obrigatório), Preço (obrigatório, >0) |
+  | OnUpdate | PUT /products/{id} | SKU (opcional, único ignorando próprio ID), Nome (opcional), Preço (opcional, >0 se fornecido) |
 */

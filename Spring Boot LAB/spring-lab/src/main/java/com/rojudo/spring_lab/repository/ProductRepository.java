@@ -1,6 +1,7 @@
 package com.rojudo.spring_lab.repository;
 
-import com.rojudo.spring_lab.model.Product;
+import com.rojudo.spring_lab.domain.Category;
+import com.rojudo.spring_lab.domain.Product;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,8 +19,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
-import com.rojudo.spring_lab.model.Category;
 
 /*
   REPOSITORY: Camada de acesso a dados

@@ -1,4 +1,4 @@
-package com.rojudo.spring_lab.security;
+package com.rojudo.spring_lab.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

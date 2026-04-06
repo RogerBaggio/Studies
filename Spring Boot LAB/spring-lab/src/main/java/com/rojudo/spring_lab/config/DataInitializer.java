@@ -1,10 +1,10 @@
 package com.rojudo.spring_lab.config;
 
-import com.rojudo.spring_lab.model.Category;
-import com.rojudo.spring_lab.model.Permission;
-import com.rojudo.spring_lab.model.Product;
-import com.rojudo.spring_lab.model.Role;
-import com.rojudo.spring_lab.model.User;
+import com.rojudo.spring_lab.domain.Category;
+import com.rojudo.spring_lab.domain.Permission;
+import com.rojudo.spring_lab.domain.Product;
+import com.rojudo.spring_lab.domain.Role;
+import com.rojudo.spring_lab.domain.User;
 import com.rojudo.spring_lab.repository.CategoryRepository;
 import com.rojudo.spring_lab.repository.PermissionRepository;
 import com.rojudo.spring_lab.repository.ProductRepository;

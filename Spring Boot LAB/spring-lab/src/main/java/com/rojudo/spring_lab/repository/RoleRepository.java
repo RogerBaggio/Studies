@@ -1,6 +1,6 @@
 package com.rojudo.spring_lab.repository;
 
-import com.rojudo.spring_lab.model.Role;
+import com.rojudo.spring_lab.domain.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

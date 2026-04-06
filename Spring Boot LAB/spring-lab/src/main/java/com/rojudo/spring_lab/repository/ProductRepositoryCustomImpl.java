@@ -1,6 +1,6 @@
 package com.rojudo.spring_lab.repository;
 
-import com.rojudo.spring_lab.model.Product;
+import com.rojudo.spring_lab.domain.Product;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.Predicate;

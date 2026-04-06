@@ -1,4 +1,4 @@
-package com.rojudo.spring_lab.security;
+package com.rojudo.spring_lab.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rojudo.spring_lab.exception.ErrorResponse;

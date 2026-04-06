@@ -4,6 +4,8 @@
 *.war
 *.ear
 
+gerar_contexto_ia.py
+
 # Maven build output
 target/
 pom.xml.tag

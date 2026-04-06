@@ -90,6 +90,11 @@ spring:
     activate:
       on-profile: dev
   
+  messages:
+    basename: validation-messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+  
   devtools:
     restart:
       enabled: true

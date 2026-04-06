@@ -1,4 +1,4 @@
-package com.rojudo.spring_lab.security;
+package com.rojudo.spring_lab.config;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

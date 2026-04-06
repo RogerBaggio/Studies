@@ -1,6 +1,6 @@
 package com.rojudo.spring_lab.repository;
 
-import com.rojudo.spring_lab.model.User;
+import com.rojudo.spring_lab.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

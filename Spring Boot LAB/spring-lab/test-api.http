@@ -53,7 +53,7 @@ Content-Type: {{contentType}}
 {
     "fullName": "Roger Baggio",
     "email": "roger@email.com",
-    "password": "Senha123",
+    "password": "Senha*123",
     "phone": "11999999999"
 }
 
@@ -75,7 +75,7 @@ Content-Type: {{contentType}}
 
 {
     "email": "roger@email.com",
-    "password": "Senha123"
+    "password": "Senha*123"
 }
 
 ### 2.4 Login - Usuário ADMIN (credenciais do DataInitializer)
@@ -328,7 +328,7 @@ Content-Type: {{contentType}}
 
 {
     "email": "roger@email.com",
-    "password": "Senha123"
+    "password": "Senha*123"
 }
 
 ### 6.4 ADMIN tentando criar produto (✅ deve funcionar)

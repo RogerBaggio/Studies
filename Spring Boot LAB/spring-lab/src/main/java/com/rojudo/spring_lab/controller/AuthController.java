@@ -1,8 +1,8 @@
-package com.rojudo.spring_lab.rest;
+package com.rojudo.spring_lab.controller;
 
-import com.rojudo.spring_lab.dto.auth.LoginRequestDTO;
-import com.rojudo.spring_lab.dto.auth.LoginResponseDTO;
-import com.rojudo.spring_lab.dto.auth.RegisterRequestDTO;
+import com.rojudo.spring_lab.dto.request.AuthLoginRequest;
+import com.rojudo.spring_lab.dto.request.AuthRegisterRequest;
+import com.rojudo.spring_lab.dto.response.AuthLoginResponse;
 import com.rojudo.spring_lab.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,8 +29,8 @@ public class AuthController {
     @Operation(summary = "Login", description = "Autentica usuário e retorna token JWT")
     @ApiResponse(responseCode = "200", description = "Login realizado com sucesso")
     @ApiResponse(responseCode = "401", description = "Credenciais inválidas")
-    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO request) {
-        LoginResponseDTO response = authService.login(request);
+    public ResponseEntity<AuthLoginResponse> login(@Valid @RequestBody AuthLoginRequest request) {
+        AuthLoginResponse response = authService.login(request);
         return ResponseEntity.ok(response);
     }
     
@@ -39,15 +39,15 @@ public class AuthController {
     @ApiResponse(responseCode = "201", description = "Usuário registrado com sucesso")
     @ApiResponse(responseCode = "400", description = "Dados inválidos")
     @ApiResponse(responseCode = "409", description = "Email já cadastrado")
-    public ResponseEntity<LoginResponseDTO> register(@Valid @RequestBody RegisterRequestDTO request) {
-        LoginResponseDTO response = authService.register(request);
+    public ResponseEntity<AuthLoginResponse> register(@Valid @RequestBody AuthRegisterRequest request) {
+        AuthLoginResponse response = authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
     
     @PostMapping("/refresh")
     @Operation(summary = "Refresh Token", description = "Renova token JWT")
-    public ResponseEntity<LoginResponseDTO> refresh(@RequestHeader("Authorization") String refreshToken) {
-        LoginResponseDTO response = authService.refreshToken(refreshToken);
+    public ResponseEntity<AuthLoginResponse> refresh(@RequestHeader("Authorization") String refreshToken) {
+        AuthLoginResponse response = authService.refreshToken(refreshToken);
         return ResponseEntity.ok(response);
     }
     

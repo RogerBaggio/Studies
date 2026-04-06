@@ -1,6 +1,6 @@
 package com.rojudo.spring_lab.repository;
 
-import com.rojudo.spring_lab.model.Permission;
+import com.rojudo.spring_lab.domain.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,6 +1,6 @@
 package com.rojudo.spring_lab.service;
 
-import com.rojudo.spring_lab.model.User;
+import com.rojudo.spring_lab.domain.User;
 import com.rojudo.spring_lab.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

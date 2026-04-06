@@ -1,34 +1,15 @@
-package com.rojudo.spring_lab.dto.auth;
+package com.rojudo.spring_lab.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-/**
- * LOGIN RESPONSE DTO
- * 
- * Resposta do endpoint de login contendo o token JWT e informações do usuário
- * 
- * PRINCÍPIOS:
- * - Record: Imutável e conciso
- * - UserInfoDTO: Usa a classe separada (não inner class)
- * - Token Bearer: Padrão OAuth2
- * 
- * ESTRUTURA:
- * - accessToken: JWT para autenticação
- * - tokenType: Sempre "Bearer" (padrão OAuth2)
- * - expiresIn: Tempo de vida do token em segundos
- * - user: Informações do usuário autenticado
- * 
- * @see UserInfoDTO
- */
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record LoginResponseDTO( //Token JWT para autenticação nas requisições subsequentes
+public record AuthLoginResponse( //Token JWT para autenticação nas requisições subsequentes
     String accessToken, // Deve ser enviado no header: Authorization: Bearer {token}
     String tokenType, // Tipo do token (padrão OAuth2). Sempre "Bearer"
     Long expiresIn, // Tempo de expiração do token em segundos. Padrão: 3600 segundos (1 hora)
-    UserInfoDTO user
+    UserInfoResponse user
 ) {
-    public LoginResponseDTO(String accessToken, UserInfoDTO user) {
+    public AuthLoginResponse(String accessToken, UserInfoResponse user) {
         this(accessToken, "Bearer", 3600L, user);
     }
 
@@ -45,7 +26,7 @@ public record LoginResponseDTO( //Token JWT para autenticação nas requisiçõe
 
     @Override
     public String toString() { //Representação simplificada para logs (não expõe o token completo)
-        return String.format("LoginResponseDTO{tokenType='%s', expiresIn=%d, user=%s}",
+        return String.format("AuthLoginResponse{tokenType='%s', expiresIn=%d, user=%s}",
             tokenType, expiresIn, user);
     }
 }
