@@ -2,6 +2,7 @@ package com.rojudo.spring_lab.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rojudo.spring_lab.exception.ErrorResponse;
+import com.rojudo.spring_lab.exception.TraceIdGenerator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -11,9 +12,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * CUSTOM AUTHENTICATION ENTRY POINT
@@ -30,17 +28,15 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
         
-        Map<String, String> details = new HashMap<>();
-        details.put("timestamp", LocalDateTime.now().toString());
-        details.put("path", request.getRequestURI());
-
+        String traceId = TraceIdGenerator.generate();
+        
+        // NOVA ASSINATURA: traceId, status, error, message, path
         ErrorResponse errorResponse = new ErrorResponse(
-            "AuthenticationError",
-            "Não autenticado", 
+            traceId,
             HttpStatus.UNAUTHORIZED.value(),
+            "Authentication Error",
             "Você precisa estar autenticado para acessar este recurso",
-            request.getRequestURI(),
-            details
+            request.getRequestURI()
         );
         
         response.setStatus(HttpStatus.UNAUTHORIZED.value());

@@ -36,7 +36,7 @@ public record UserInfoResponse(
     // Retorna representação simplificada para logs
     @Override
     public String toString() {
-        return String.format("UserInfoDTO{id=%d, email='%s', fullName='%s', roles=%s}",
+        return String.format("UserInfoResponse{id=%d, email='%s', fullName='%s', roles=%s}",
             id, email, fullName, roles);
     }
 }
