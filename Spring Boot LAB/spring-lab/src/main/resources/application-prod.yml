@@ -1,0 +1,43 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/springlab_db}
+    username: ${DB_USERNAME:springlab_user}
+    password: ${DB_PASSWORD:springlab_password}
+    hikari:
+      maximum-pool-size: ${DB_POOL_MAX:20}
+      minimum-idle: ${DB_POOL_MIN:10}
+      connection-timeout: 30000
+  
+  jpa:      
+    show-sql: false
+    properties:
+      hibernate:
+        ddl-auto: validate
+        jdbc.batch_size: 50
+        generate_statistics: false
+  
+  flyway:
+    enabled: true
+    baseline-on-migrate: false
+
+server:
+  tomcat:
+    max-connections: 10000
+    threads:
+      max: 200
+      min-spare: 10
+
+logging:
+  level:
+    com.rojudo.spring_lab: INFO
+    org.springframework.web: WARN
+    org.hibernate.SQL: WARN
+    org.springframework.jdbc: INFO
+
+data:
+  initializer:
+    enabled: false

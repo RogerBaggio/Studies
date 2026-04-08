@@ -14,9 +14,9 @@ services:
       # Persistência dos dados
       - postgres_data:/var/lib/postgresql/data
       # Scripts de inicialização customizados
-      - ./docker/postgres/init:/docker-entrypoint-initdb.d
+      #- ./docker/postgres/init:/docker-entrypoint-initdb.d
       # Backup directory
-      - ./backups:/backups
+      #- ./backups:/backups
     networks:
       - springlab-network
     healthcheck:

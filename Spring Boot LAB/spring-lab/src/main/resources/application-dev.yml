@@ -1,0 +1,86 @@
+# ============================================
+# DEVELOPMENT PROFILE
+# ============================================
+spring:
+  config:
+    activate:
+      on-profile: dev
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/springlab_db
+    username: springlab_user
+    password: springlab_password
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+  
+  messages:
+    basename: validation-messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          batch_size: 20
+          fetch_size: 100
+        cache:
+          use_second_level_cache: false
+          use_query_cache: false
+        generate_statistics: true
+        enable_lazy_load_no_trans: false
+  
+  security:
+    user:
+      name: admin
+      password: admin123
+      roles: ADMIN,USER
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0
+    locations: classpath:db/migration
+    table: flyway_schema_history
+    validate-on-migrate: false
+  
+  devtools:
+    restart:
+      enabled: true
+      additional-paths:
+        - src/main/resources
+      exclude:
+        - static/**
+        - public/**
+    livereload:
+      enabled: true
+
+logging:
+  level:
+    com.rojudo.spring_lab: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    com.zaxxer.hikari: DEBUG
+    org.springframework.jdbc: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level) [%thread] %clr(%logger{36}){cyan} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/spring-lab-dev.log
+    max-size: 50MB
+    max-history: 30
+  # Desabilita logs de estatísticas
+    org.hibernate.stat: DEBUG
+    org.hibernate.engine.internal.StatisticalLoggingSessionEventListener: OFF
+
+data:
+  initializer:
+    enabled: true
