@@ -20,6 +20,7 @@
 	<properties>
 		<java.version>21</java.version>
 		<flyway.version>10.11.0</flyway.version>
+		<testcontainers.version>1.21.0</testcontainers.version>
 	</properties>
 	
 	<dependencies>
@@ -49,6 +50,13 @@
             <scope>runtime</scope>
         </dependency>
         
+		<!-- H2 Database para testes -->
+		<dependency>
+    		<groupId>com.h2database</groupId>
+    		<artifactId>h2</artifactId>
+    		<scope>test</scope>
+		</dependency>
+
         <!-- Validation -->
 		<dependency>
     		<groupId>org.springframework.boot</groupId>
@@ -80,6 +88,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- Spring Security Test (para @WithMockUser, csrf(), etc.) -->
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-test</artifactId>
+    		<scope>test</scope>
 		</dependency>
 
 	    <!-- Flyway for Database Migrations -->
@@ -133,6 +148,27 @@
         	<version>0.12.6</version>
         	<scope>runtime</scope>
     	</dependency>
+
+		<!-- Testcontainers para PostgreSQL real -->
+		<dependency>
+    		<groupId>org.testcontainers</groupId>
+    		<artifactId>testcontainers</artifactId>
+    		<scope>test</scope>
+		</dependency>
+
+		<dependency>
+    		<groupId>org.testcontainers</groupId>
+    		<artifactId>postgresql</artifactId>
+    		<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+    		<groupId>org.testcontainers</groupId>
+    		<artifactId>junit-jupiter</artifactId>
+    		<scope>test</scope>
+		</dependency>
+
+		
 
 	</dependencies>
 
