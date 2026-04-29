@@ -1,184 +1,17 @@
-# Compiled class files
-*.class
-*.jar
-*.war
-*.ear
+# ============================================
+# API DOCUMENTATION & SCRIPTS
+# ============================================
+gerador_contexto_ia.py
+contexto_projeto_????????_??????.md
+test-api.http
+*.http
+!test-api.http.example
 
-gerar_contexto_ia.py
-
-# Maven build output
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-.mvn/wrapper/maven-wrapper.jar
-
-# Maven wrapper (keep the .mvn/wrapper/maven-wrapper.properties but ignore the jar)
-.mvn/wrapper/maven-wrapper.jar
-!/.mvn/wrapper/maven-wrapper.properties
-
-# Gradle build output
-.gradle/
-build/
-!gradle-wrapper.jar
-
-# IDE files
-.idea/
-*.iml
-*.iws
-*.ipr
-.classpath
-.project
-.settings/
-.vscode/
-*.swp
-*.swo
-*~
-.DS_Store
-
-# Spring Boot specific
-application-dev.properties
-application-dev.yml
-application-local.properties
-application-local.yml
-application-test.properties
-application-test.yml
-
-# Environment specific
-.env
-.env.local
-.env.*.local
-
-# Logs
-logs/
-*.log
-*.log.gz
-
-# Database
-# H2 database files
-*.h2.db
-*.mv.db
-*.trace.db
-*.lock.mv.db
-
-# PostgreSQL data
-postgres-data/
-pgdata/
-
-# Docker
-# Docker Compose volumes (keep the docker-compose.yml but ignore data)
-docker-compose.override.yml
-docker-compose.*.yml
-!docker-compose.yml
-!docker-compose.prod.yml
-postgres_data/
-pgadmin_data/
-redis_data/
-docker/volumes/
-
-# Backup files
-*.bak
-*.backup
-*.orig
-*.rej
-*~
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-Desktop.ini
-
-# Secrets and sensitive data
-application-secret.yml
-application-secret.properties
-*.secret.yml
-*.secret.properties
-secrets/
-*.key
-*.p12
-*.jks
-*.pem
-*.crt
-
-# Test coverage
-target/surefire-reports/
-target/jacoco.exec
-*.jacoco
-.verification/
-
-# Performance and monitoring
-heapdump.hprof
-*.hprof
-*.dump
-
-# Custom application data
-data/
-uploads/
-temp/
-tmp/
-
-# Node.js (if you have frontend)
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Optional: Keep specific files
-#!src/main/resources/application.yml
-#!src/main/resources/application-prod.yml
-#!src/main/resources/application-dev.yml.example
-
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
+# Swagger UI local
+/swagger-ui/
 
 # ============================================
-# SPRING BOOT - PROFESSIONAL .gitignore
-# Projeto: spring-lab
-# ============================================
-
-# ============================================
-# COMPILED FILES
+# COMPILED FILES & BUILD OUTPUTS
 # ============================================
 *.class
 *.jar
@@ -189,19 +22,24 @@ build/
 *.tar.gz
 *.rar
 
-# ============================================
-# BUILD DIRECTORIES
-# ============================================
+# Build directories
 /target/
 /build/
 /out/
 /bin/
+/dist/
+/dist-ssr/
+/build/
 /.apt_generated/
 /.apt_generated_tests/
+**/target/
+**/build/
+**/dist/
 
 # ============================================
-# MAVEN & GRADLE
+# BACKEND - JAVA/SPRING BOOT
 # ============================================
+
 # Maven
 pom.xml.tag
 pom.xml.releaseBackup
@@ -212,6 +50,7 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
+!/.mvn/wrapper/maven-wrapper.properties
 
 # Gradle
 .gradle/
@@ -219,15 +58,106 @@ gradle-app.setting
 !gradle-wrapper.jar
 .gradletasknamecache
 
+# Spring Boot specific
+application-dev.properties
+application-dev.yml
+application-local.properties
+application-local.yml
+application-test.properties
+application-test.yml
+application-secret.yml
+application-secret.properties
+*.secret.yml
+*.secret.properties
+/spring-boot-devtools.log
+/spring-boot-devtools.properties
+/.spring-boot-devtools.properties
+/spring-boot-devtools.pid
+/application-dev.properties.local
+/application-prod.properties.local
+bootstrap-local.yml
+bootstrap-local.properties
+
 # ============================================
-# IDE FILES (VS Code, IntelliJ, Eclipse)
+# FRONTEND - REACT + VITE + TYPESCRIPT
+# ============================================
+
+# Dependencies (NUNCA commitar)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Lock files (discutir com time - recomendado COMMITAR)
+# package-lock.json   # Descomente se quiser commit
+# yarn.lock           # Descomente se quiser commit
+# pnpm-lock.yaml      # Descomente se quiser commit
+
+# Vite specific
+.vite/
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+vite.config.*.timestamp-*
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+.out/
+*.local.css
+*.local.js
+
+# Cache
+.cache/
+.parcel-cache/
+.temp/
+.tmp/
+.eslintcache
+.prettiercache
+.vitest/
+.router/
+.react-query/
+
+# TypeScript
+*.tsbuildinfo
+*.ts.map
+*.js.map
+*.d.ts.map
+tsconfig.tsbuildinfo
+
+# Testing coverage
+coverage/
+.nyc_output/
+.vitest/results/
+*.lcov
+test-report.html
+test-report.xml
+
+# ============================================
+# ENVIRONMENT VARIABLES (⚠️ NUNCA COMMITAR!)
+# ============================================
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.staging
+.env.test
+
+# Template file (versionar este!)
+!.env.example
+
+# ============================================
+# IDE FILES (Configurações pessoais)
 # ============================================
 
 # VS Code
 .vscode/
+!.vscode/extensions.json
 !.vscode/settings.json
 !.vscode/launch.json
-!.vscode/extensions.json
 *.code-workspace
 
 # IntelliJ IDEA
@@ -237,57 +167,41 @@ gradle-app.setting
 *.ipr
 .idea_modules/
 out/
-.idea_modules/
 
 # Eclipse
 .settings/
 .classpath
 .project
 .apt_generated/
-.apt_generated_tests/
 .factorypath
 .springBeans
 .sts4-cache
 
 # NetBeans
-/nbproject/
 /nbproject/private/
-/build/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
 # ============================================
-# LOGS & DATABASES
-# ============================================
-*.log
-*.log.gz
-logs/
-log/
-.h2.db
-*.db
-*.h2.db
-*.lock.db
-*.trace.db
-*.script
-*.lobs
-
-# ============================================
-# SPRING BOOT SPECIFIC
-# ============================================
-/spring-boot-devtools.log
-/spring-boot-devtools.properties
-/.spring-boot-devtools.properties
-/spring-boot-devtools.pid
-/application-dev.properties.local
-/application-prod.properties.local
-
-# ============================================
 # DOCKER & CONTAINERS
 # ============================================
+
+# Docker volumes (dados persistidos)
+postgres_data/
+pgadmin_data/
+redis_data/
+docker/volumes/
+
+# Docker compose overrides
 docker-compose.override.yml
 docker-compose.override.yaml
+docker-compose.*.yml
+!docker-compose.yml
+!docker-compose.prod.yml
+
+# Docker ignore
 .dockerignore
 *.pid
 *.sock
@@ -295,19 +209,56 @@ docker-compose.override.yaml
 *.volume
 
 # ============================================
-# DATABASE & BACKUP FILES
+# DATABASE FILES (LOCAL)
 # ============================================
+
+# H2 database
+*.h2.db
+*.mv.db
+*.trace.db
+*.lock.mv.db
+*.script
+*.lobs
+
+# PostgreSQL data
+postgres-data/
+pgdata/
+
+# Other databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Database dumps (NUNCA commitar)
 *.sql
 *.dump
-*.backup
 backups/
+*.backup
 *.bak
-*.old
-*.orig
-*.rej
 
 # ============================================
-# SECURITY & SECRETS
+# LOGS & TEMPORARY FILES
+# ============================================
+logs/
+log/
+*.log
+*.log.gz
+*.tmp
+*.temp
+*.cache
+*.pid
+*.seed
+*.pid.lock
+*.tgz
+
+# Performance monitoring
+heapdump.hprof
+*.hprof
+*.heapdump
+*.dump
+
+# ============================================
+# SECURITY & SECRETS (⚠️ NUNCA COMMITAR!)
 # ============================================
 *.p12
 *.jks
@@ -318,8 +269,10 @@ backups/
 *.pfx
 *.keystore
 *.truststore
-.secret/
 secrets/
+.secret/
+*.secret.yml
+*.secret.properties
 application-secrets.yml
 application-secrets.yaml
 application-secrets.properties
@@ -327,6 +280,7 @@ application-secrets.properties
 # ============================================
 # OS GENERATED FILES
 # ============================================
+
 # Windows
 Thumbs.db
 Thumbs.db:encryptable
@@ -345,7 +299,6 @@ $RECYCLE.BIN/
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
 *.swp
 *.swo
 *~
@@ -375,7 +328,7 @@ Temporary Items
 .*.swo
 
 # ============================================
-# TEST COVERAGE REPORTS
+# TEST COVERAGE & REPORTS
 # ============================================
 /site/
 /test-output/
@@ -387,64 +340,19 @@ Temporary Items
 /cobertura.ser
 /htmlReport/
 /test-results/
+*.jacoco
+.verification/
 
 # ============================================
-# NODE & FRONTEND (se houver)
+# BACKUP & TEMP FILES
 # ============================================
-node_modules/
-npm-debug.log
-yarn-debug.log
-yarn-error.log
-package-lock.json
-yarn.lock
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-dist/
-build/
-
-# ============================================
-# TEMPORARY & CACHE FILES
-# ============================================
-*.tmp
-*.temp
-*.cache
-.cache/
-.attach_pid*
-.history/
-*.hprof
-*.heapdump
-*.dump
-
-# ============================================
-# PROJECT SPECIFIC
-# ============================================
-
-# Spring Boot devtools
-.spring-boot-devtools/
-
-# Actuator (se tiver configurações locais)
-/actuator/
-/health/
-
-# Swagger UI local
-/swagger-ui/
-
-# Your project specific
-test-api.http
-*.http
-!test-api.http.example
-
-
-
-# Application config local (nunca commitar)
-application-local.yml
-application-local.yaml
-application-local.properties
-bootstrap-local.yml
-bootstrap-local.properties
+*.bak
+*.backup
+*.orig
+*.rej
+*.old
+*.seed
+*~
 
 # ============================================
 # METADATA & REPORTING
@@ -458,9 +366,12 @@ bootstrap-local.properties
 .pmd
 .prefs
 .externalToolBuilders/
+.stats/
+stats.html
+bundle-analysis.html
 
 # ============================================
-# REMOTE & DEPLOYMENT
+# DEPLOYMENT & CLOUD
 # ============================================
 /.deploy/
 /.elasticbeanstalk/
@@ -470,26 +381,88 @@ bootstrap-local.properties
 /terraform.tfstate
 /terraform.tfstate.backup
 /terraform.tfvars
+.vercel
+.netlify
 
 # ============================================
-# EXCEPTIONS (Arquivos que DEVEM ser versionados)
+# CUSTOM DATA & UPLOADS
 # ============================================
-# Docker
+data/
+uploads/
+temp/
+tmp/
+
+# ============================================
+# STORYBOOK (se usar)
+# ============================================
+storybook-static/
+*.storybook/manager.js
+*.storybook/preview.js
+
+# ============================================
+# EXCEPTIONS - ARQUIVOS QUE DEVEM SER VERSIONADOS
+# ============================================
+
+# Docker files (versão)
 !docker-compose.yml
 !docker-compose.yaml
 !Dockerfile
+!Dockerfile.dev
 
 # Application config templates
-!application.yml
-!application-dev.yml
-!application-prod.yml
-!application-test.yml
+!src/main/resources/application.yml
+!src/main/resources/application-prod.yml
+!src/main/resources/application-dev.yml.example
+!src/main/resources/application-test.yml
+!bootstrap.yml
+!bootstrap-prod.yml
+
+# Frontend config examples
+!vite.config.ts
+!vite.config.js
+!tsconfig.json
+!tsconfig.node.json
+!tailwind.config.js
+!postcss.config.js
+!.eslintrc.cjs
+!.eslintrc.js
+!.prettierrc
+!.prettierrc.js
 
 # Documentation
 !README.md
 !LICENSE
 !CONTRIBUTING.md
+!CODE_OF_CONDUCT.md
+!SECURITY.md
 
-# Examples
+# Examples and templates
 !*.example
 !*.sample
+!.env.example
+
+# Git files (manter)
+!.gitattributes
+!.gitignore
+
+# ============================================
+# HELPERS (Arquivos auxiliares)
+# ============================================
+HELP.md
+README.md.bak
+*.md.bak
+
+# ============================================
+# SPRING BOOT ACTUATOR (LOCAL)
+# ============================================
+/actuator/
+/health/
+
+# ============================================
+# VS CODE SPECIFIC (Recomendações)
+# ============================================
+
+# VS Code workspace files (opcional versionar)
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
