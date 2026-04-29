@@ -93,6 +93,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of(
             "http://localhost:3000",     // React dev
             "http://localhost:4200",     // Angular dev
+            "http://localhost:5173",     // Vite React TS dev
             "http://localhost:8081"      // Outros frontends
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));

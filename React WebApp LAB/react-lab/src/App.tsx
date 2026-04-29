@@ -4,6 +4,7 @@ import { AuthProvider } from './stores/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { MainLayout } from './components/layout/MainLayout';
 import { LoginPage } from './pages/Login';
+import { RegisterPage } from './pages/Register';
 import { ProductsPage } from './pages/Products';
 import { DashboardPage } from './pages/Dashboard';
 import { UnauthorizedPage } from './pages/Unauthorized';
@@ -26,8 +27,9 @@ export default function App() {
           <Routes>
             {/* Rotas Públicas */}
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
-
+            
             {/* Rotas Protegidas */}
             <Route element={<ProtectedRoute />}>
               <Route element={<MainLayout />}>
